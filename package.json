@@ -1,0 +1,13 @@
+{
+  "name": "asti-local-monitor",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@upstash/redis": "^1.35.3"
+  }
+}

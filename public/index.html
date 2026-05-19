@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASTI · 涩涩人格测试 — Adult Sex Type Indicator</title>
+<style>
+:root {
+    --bg: #07070e;
+    --card: #10101b;
+    --card2: #161626;
+    --border: rgba(255,255,255,0.05);
+    --text: #dedce8;
+    --sub: #88879c;
+    --dim: #4a495b;
+    --red: #c24355;
+    --red2: #9e2e3f;
+    --purple: #9850c8;
+    --purple2: #6d2fa0;
+    --gold: #c2a058;
+    --gold2: #8c7138;
+    --green: #4aa882;
+    --blue: #4a7cb2;
+    --radius: 16px;
+    --radius2: 10px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+    font-family:'PingFang SC','Noto Sans SC','Microsoft YaHei','Segoe UI',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.6;
+}
+body::before{
+    content:'';
+    position:fixed;
+    top:0;left:0;width:100%;height:100%;
+    background:
+        radial-gradient(ellipse at 50% 0%,rgba(194,67,85,0.07) 0%,transparent 55%),
+        radial-gradient(ellipse at 80% 70%,rgba(152,80,200,0.05) 0%,transparent 55%),
+        radial-gradient(ellipse at 20% 40%,rgba(194,160,88,0.03) 0%,transparent 50%),
+        radial-gradient(ellipse at 60% 100%,rgba(74,124,178,0.04) 0%,transparent 50%);
+    pointer-events:none;z-index:0;
+}
+.container{width:100%;max-width:720px;padding:20px;position:relative;z-index:1;padding-bottom:60px}
+
+/* Header */
+.header{text-align:center;padding:38px 0 18px}
+.header .logo{
+    font-size:3.4em;letter-spacing:10px;font-weight:900;
+    background:linear-gradient(135deg,var(--red),var(--purple),var(--gold));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    background-clip:text;
+    user-select:none;
+}
+.header .sub{font-size:0.84em;color:var(--dim);letter-spacing:5px;margin-top:2px}
+.header .tag{font-size:0.74em;color:var(--dim);margin-top:4px;opacity:0.7}
+
+/* Cards */
+.card{
+    background:var(--card);
+    border-radius:var(--radius);
+    padding:28px 24px;
+    margin-bottom:14px;
+    border:1px solid var(--border);
+    backdrop-filter:blur(8px);
+    animation:fadeUp .45s ease;
+    position:relative;
+    overflow:hidden;
+}
+.card::after{
+    content:'';
+    position:absolute;
+    top:0;left:0;width:100%;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,0.04),transparent);
+    pointer-events:none;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes subtlePulse{0%,100%{opacity:0.45}50%{opacity:0.75}}
+
+/* Progress */
+.progress-wrap{background:var(--card2);border-radius:20px;height:6px;margin-bottom:16px;overflow:hidden}
+.progress-fill{
+    background:linear-gradient(90deg,var(--red),var(--purple));
+    height:100%;border-radius:20px;transition:width .35s ease;
+}
+.progress-info{display:flex;justify-content:space-between;font-size:0.78em;color:var(--dim);margin-bottom:6px}
+
+/* Question */
+.q-num{font-size:0.78em;color:var(--red);letter-spacing:3px;margin-bottom:6px;font-weight:600}
+.q-text{font-size:1.15em;font-weight:500;line-height:1.7;margin-bottom:18px;color:var(--text)}
+.options{display:flex;flex-direction:column;gap:8px}
+.opt-btn{
+    background:var(--card2);
+    border:1.5px solid rgba(255,255,255,0.05);
+    border-radius:var(--radius2);
+    padding:13px 16px;
+    cursor:pointer;
+    color:var(--sub);
+    font-size:0.92em;
+    text-align:left;
+    transition:all .22s ease;
+    position:relative;
+    user-select:none;
+}
+.opt-btn:hover{border-color:rgba(194,67,85,0.35);background:rgba(194,67,85,0.04);color:var(--text)}
+.opt-btn.selected{border-color:var(--purple);background:rgba(152,80,200,0.08);color:var(--text);box-shadow:0 0 14px rgba(152,80,200,0.1)}
+.opt-btn .dot{
+    display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:10px;
+    background:var(--dim);transition:all .22s;vertical-align:middle;
+}
+.opt-btn.selected .dot{background:var(--purple);box-shadow:0 0 8px var(--purple)}
+
+/* Buttons */
+.btn-row{display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+.btn{
+    display:inline-block;padding:13px 34px;border-radius:28px;font-size:0.95em;font-weight:600;
+    cursor:pointer;border:none;transition:all .28s ease;letter-spacing:0.5px;
+    position:relative;overflow:hidden;
+}
+.btn-primary{
+    background:linear-gradient(135deg,var(--red),var(--red2));
+    color:#fff;box-shadow:0 6px 22px rgba(194,67,85,0.25);
+}
+.btn-primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 30px rgba(194,67,85,0.35)}
+.btn-outline{
+    background:transparent;color:var(--red);
+    border:2px solid rgba(194,67,85,0.4);
+}
+.btn-outline:hover{background:rgba(194,67,85,0.06);border-color:var(--red)}
+.btn-purple{background:linear-gradient(135deg,var(--purple),var(--purple2));color:#fff;box-shadow:0 6px 22px rgba(152,80,200,0.25)}
+.btn-purple:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 30px rgba(152,80,200,0.35)}
+.btn:disabled{opacity:0.35;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+
+/* Results */
+.result-header{text-align:center;padding:16px 0}
+.result-code{
+    font-size:3.6em;font-weight:900;letter-spacing:10px;
+    background:linear-gradient(135deg,var(--red),var(--purple),var(--gold));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    background-clip:text;line-height:1.1;
+}
+.result-name{font-size:1.5em;font-weight:700;margin-top:2px;color:var(--text)}
+.result-slogan{font-size:0.95em;color:var(--gold);font-style:italic;margin-top:4px}
+.result-desc{line-height:1.85;color:var(--sub);text-align:center;margin:10px 0 18px;font-size:0.9em}
+
+/* Radar */
+.radar-wrap{text-align:center;margin:12px 0}
+canvas#radar{max-width:100%;height:auto}
+
+/* Tags & Pills */
+.tag-row{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:8px 0}
+.tag{padding:5px 14px;border-radius:18px;font-size:0.8em;font-weight:600;background:rgba(194,67,85,0.1);color:var(--red)}
+.tag.gold{background:rgba(194,160,88,0.1);color:var(--gold)}
+.tag.green{background:rgba(74,168,130,0.1);color:var(--green)}
+.tag.purple{background:rgba(152,80,200,0.1);color:var(--purple)}
+.tag.blue{background:rgba(74,124,178,0.1);color:var(--blue)}
+
+/* Role meter */
+.role-meter{display:flex;align-items:center;gap:12px;padding:10px 0;justify-content:center}
+.role-label{font-weight:700;font-size:0.85em;min-width:40px;text-align:center}
+.role-label.l{color:var(--green)}
+.role-label.r{color:var(--red)}
+.role-bar-wrap{flex:1;max-width:260px;background:var(--card2);border-radius:20px;height:10px;overflow:hidden;position:relative}
+.role-bar-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--green),var(--gold),var(--red));transition:width .7s ease}
+.role-indicator{font-weight:700;font-size:0.95em;min-width:50px;text-align:center;color:var(--gold)}
+
+/* Info blocks */
+.info-block{margin:8px 0}
+.info-block h3{font-size:0.9em;color:var(--red);letter-spacing:1px;margin-bottom:6px;font-weight:600}
+.info-block h4{font-size:0.82em;color:var(--purple);margin-bottom:4px;font-weight:500}
+.info-block p,.info-block ul{color:var(--sub);line-height:1.8;font-size:0.88em}
+.info-block ul{padding-left:18px}
+.info-block li{margin-bottom:3px}
+
+.section-divider{text-align:center;margin:20px 0 10px;font-size:0.72em;color:var(--dim);letter-spacing:4px;text-transform:uppercase;opacity:0.8}
+
+/* Welcome */
+.welcome-symbol{font-size:3.5em;text-align:center;color:var(--red);animation:subtlePulse 3s infinite;user-select:none}
+.disclaimer{font-size:0.72em;color:var(--dim);text-align:center;margin-top:14px;line-height:1.7;opacity:0.7}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--dim);border-radius:3px}
+
+/* Responsive */
+@media(max-width:500px){
+    .header .logo{font-size:2.2em;letter-spacing:5px}
+    .result-code{font-size:2.4em;letter-spacing:5px}
+    .result-name{font-size:1.2em}
+    .q-text{font-size:1em}
+    .opt-btn{padding:11px 12px;font-size:0.84em}
+    .card{padding:20px 14px}
+    .btn{padding:11px 24px;font-size:0.86em}
+}
+</style>
+</head>
+<body>
+<div class="container" id="app">
+
+<!-- SCREEN: START -->
+<div id="scr-start">
+    <div class="header">
+        <div class="logo">A S T I</div>
+        <div class="sub">ADULT SEX TYPE INDICATOR</div>
+        <div class="tag">—— 隐秘人格深度探索 ——</div>
+    </div>
+    <div class="card">
+        <div class="welcome-symbol">◈</div>
+        <p style="text-align:center;line-height:1.9;color:var(--sub);font-size:0.92em">
+            本测试从<strong style="color:var(--red)">十个维度</strong>深度探索你的隐秘人格<br>
+            题库共 <strong style="color:var(--purple)">200 题</strong>，每次随机抽取 <strong style="color:var(--gold)">85 题</strong><br>
+            你将获得完整详尽的人格分析报告
+        </p>
+        <p style="text-align:center;margin-top:10px;color:var(--gold);font-size:0.82em">
+            包含：人格类型 · 十维雷达图 · 攻受分析 · 性取向深度分析<br>
+            片型观看偏好（含视角/风格详细分析）· 猎奇等级及子类分析 · 最佳匹配与避雷
+        </p>
+        <div style="text-align:center;margin-top:16px">
+            <button class="btn btn-primary" onclick="ASTI.start()">开 始 测 试</button>
+        </div>
+        <p class="disclaimer">
+            本测试仅供娱乐，不构成任何专业建议，请勿将该内容深记于心，只推荐发给朋友互相调侃。<br>
+            所有内容均为 AI 生成给出的结果以及题目不一定符合实际或符合该内容的相关问题，仅供参考。<br>
+            使用本地服务运行时，答题记录会提交并保存在本机监控后台；直接打开 HTML 时不会上传。<br>
+            未满 18 岁请勿使用。（骗你的你几岁都无所谓）
+        </p>
+    </div>
+</div>
+
+<!-- SCREEN: QUESTION -->
+<div id="scr-question" style="display:none">
+    <div class="header">
+        <div class="logo" style="font-size:2em;letter-spacing:6px">A S T I</div>
+        <div class="sub">答题中</div>
+    </div>
+    <div class="progress-info"><span id="prog-label">进度</span><span id="prog-num">0 / 85</span></div>
+    <div class="progress-wrap"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="card" id="q-card">
+        <div class="q-num" id="q-num"></div>
+        <div class="q-text" id="q-text"></div>
+        <div class="options" id="q-opts"></div>
+    </div>
+    <div class="btn-row">
+        <button class="btn btn-outline" id="btn-prev" onclick="ASTI.prev()" style="display:none">上一题</button>
+        <button class="btn btn-primary" id="btn-next" onclick="ASTI.next()" disabled>下一题</button>
+    </div>
+</div>
+
+<!-- SCREEN: RESULT -->
+<div id="scr-result" style="display:none">
+    <div class="header">
+        <div class="logo" style="font-size:2em;letter-spacing:6px">测试结果</div>
+    </div>
+    <div class="card" id="result-card"></div>
+    <div class="btn-row">
+        <button class="btn btn-purple" onclick="ASTI.restart()">重新测试</button>
+        <button class="btn btn-outline" onclick="ASTI.copyResult()">复制结果</button>
+    </div>
+    <p class="disclaimer">结果仅供娱乐 · 相同选项再次测试可能获得不同结果</p>
+</div>
+
+</div>
+
+<script>
+// ===========================
+// ASTI v2 — 280题 · 28人格 · 加权匹配 · 深度分析
+// ===========================
+const ASTI = (function(){
+    'use strict';
+
+    // ---- 10 Dimensions ----
+    const DIMS = [
+        {id:'D', name:'支配倾向', low:'顺从被控', high:'强势掌控', weight:1.0},
+        {id:'O', name:'开放程度', low:'保守传统', high:'开放探索', weight:1.1},
+        {id:'K', name:'猎奇指数', low:'香草清新', high:'重度猎奇', weight:1.2},
+        {id:'R', name:'浪漫需求', low:'纯肉体关系', high:'必须有爱', weight:1.0},
+        {id:'L', name:'欲望强度', low:'低欲望', high:'高欲望', weight:0.9},
+        {id:'E', name:'表现欲望', low:'极度私密', high:'享受展示', weight:0.8},
+        {id:'F', name:'幻想倾向', low:'现实务实', high:'幻想丰富', weight:1.0},
+        {id:'A', name:'情感依恋', low:'抽离冷静', high:'容易走心', weight:1.0},
+        {id:'G', name:'性别弹性', low:'传统性别观', high:'性别流动', weight:1.0},
+        {id:'T', name:'道具兴趣', low:'无兴趣', high:'痴迷道具', weight:0.9},
+    ];
+
+    // ---- 28 Personalities ----
+    const PERSONALITIES = [
+        // 1 PRED - 狩猎者
+        {code:'PRED', cn:'狩猎者', en:'Predator', slogan:'锁定目标，从不失手',
+         desc:'你天生具备猎人的本能——目标明确，行动果断。在亲密关系中，你享受追逐的快感和征服的成就感。你擅长洞察对方的弱点与渴望，并将其化为掌控的筹码。对你而言，性是一场精心策划的狩猎，而你，永远是手握缰绳的人。',
+         vec:{D:86,O:54,K:42,R:22,L:80,E:34,F:26,A:20,G:26,T:16},
+         atk:'强攻', atkPct:88, orient:'异性/双性', kinkLv:'中等',
+         films:['支配/臣服题材','权力反转','强硬征服','轻度BDSM'],
+         match:['SUBM','PETV','MAST'], warn:['EMPR','SADI']},
+        // 2 EMPR - 帝王/女王
+        {code:'EMPR', cn:'帝王/女王', en:'Emperor/Empress', slogan:'跪好，这是命令',
+         desc:'你是天生的绝对支配者。在亲密关系中，你需要完全臣服。你享受制定规则、发号施令，快感来自对方的服从与崇拜。BDSM文化中的"Dom"角色与你完美契合，但需注意控制欲的边界。',
+         vec:{D:94,O:66,K:60,R:16,L:76,E:56,F:30,A:12,G:36,T:40},
+         atk:'绝对强攻', atkPct:95, orient:'异性/双性/泛性', kinkLv:'中高',
+         films:['权力支配','调教题材','女王/帝王系','规则与惩罚'],
+         match:['SUBM','PETV','MASO'], warn:['SADI','PRED']},
+        // 3 WILD - 野兽派
+        {code:'WILD', cn:'野兽派', en:'Wild Beast', slogan:'本能至上，火力全开',
+         desc:'你是一头未被驯化的野兽——原始、直接、不加掩饰。性对你来说不需要复杂的仪式，本能驱动一切。你享受身体最原始的碰撞，不喜过多言语和情感包装。你的激情来得快去得也快，但燃烧时足以灼伤一切。',
+         vec:{D:76,O:48,K:36,R:16,L:92,E:26,F:20,A:16,G:20,T:10},
+         atk:'偏攻', atkPct:74, orient:'异性倾向', kinkLv:'中等偏低',
+         films:['直接激烈的性爱','原始本能','少剧情多动作','力量型'],
+         match:['VANI','CHILL','PURE'], warn:['ROMA','TEND']},
+        // 4 MAST - 掌控者
+        {code:'MAST', cn:'掌控者', en:'Master', slogan:'把手给我，交给我来',
+         desc:'你是温柔的掌控者——强势但不粗暴，引导但不强迫。你喜欢在关系中扮演"爹系"或"姐姐系"角色，用经验和耐心引导对方探索未知领域。你享受被信任的感觉，也愿意为对方的体验负责。',
+         vec:{D:72,O:40,K:30,R:46,L:66,E:20,F:26,A:52,G:16,T:20},
+         atk:'偏攻', atkPct:70, orient:'异性/双性', kinkLv:'中等偏低',
+         films:['温柔引导','经验者带新人','成熟男女','教学式亲密'],
+         match:['SUBM','PURE','ROMA'], warn:['EMPR','SADI']},
+        // 5 SADI - 施虐者
+        {code:'SADI', cn:'施虐者', en:'Sadist', slogan:'你的痛，我的欢愉',
+         desc:'你在施加痛苦中获取快感——但前提是知情同意。你深谙BDSM的核心伦理，享受精心控制的权力交换。鞭打、束缚、羞辱是你快感的催化剂，但你也重视aftercare。',
+         vec:{D:90,O:76,K:82,R:8,L:70,E:40,F:46,A:8,G:26,T:56},
+         atk:'强攻', atkPct:90, orient:'双性/泛性', kinkLv:'高',
+         films:['重度BDSM','鞭打束缚','权力交换','调教与惩戒'],
+         match:['MASO','SUBM','PETV'], warn:['PURE','VANI','ROMA']},
+        // 6 DARK - 暗黑者
+        {code:'DARK', cn:'暗黑者', en:'Dark One', slogan:'深渊也在凝视你',
+         desc:'你被禁忌和黑暗所吸引——越是常人回避的领域，越让你兴奋。你对极端猎奇内容有强烈好奇心：怪物、外星生物、寄生幻想、异种交合、产卵/寄生等。幻想与现实你分得很清，但幻想本身已足够让你获得满足。',
+         vec:{D:60,O:92,K:95,R:6,L:64,E:46,F:70,A:6,G:56,T:66},
+         atk:'攻/双', atkPct:56, orient:'双性/泛性/无性别偏好', kinkLv:'极高',
+         films:['极端猎奇','异种/怪物/外星','寄生/产卵','触手','黑暗幻想','禁忌题材'],
+         match:['ALIEN','KINK','FURRY'], warn:['VANI','PURE','CHILL']},
+        // 7 DEMO - 魅魔体质
+        {code:'DEMO', cn:'魅魔体质', en:'Demon Body', slogan:'没有人能抗拒我',
+         desc:'你的性魅力浑然天成——举手投足间散发致命的吸引力。你对自身魅力有清醒认知并懂得运用。你喜欢成为焦点，享受被渴望的感觉。在床上你是热情主动的一方，但也不介意偶尔被动。',
+         vec:{D:50,O:80,K:66,R:36,L:86,E:76,F:60,A:30,G:66,T:46},
+         atk:'双/偏攻', atkPct:54, orient:'双性/泛性', kinkLv:'中高',
+         films:['高颜值/魅力主角','激情诱惑','多角色关系','视觉享受型'],
+         match:['CHRM','SWNG','NYMP'], warn:['CHILL','VANI']},
+        // 8 SWNG - 自由玩咖
+        {code:'SWNG', cn:'自由玩咖', en:'Swinger', slogan:'开心就好，别想太多',
+         desc:'你把性视为一场游戏——开放、自由、无负担。一夫一妻制在你看来是选项而非必选项。你对多伴侣、开放关系、交换伴侣等持开放态度。你享受新鲜感，讨厌被束缚，但可能因此难以建立深度亲密关系。',
+         vec:{D:40,O:86,K:56,R:10,L:80,E:56,F:36,A:10,G:46,T:36},
+         atk:'双', atkPct:46, orient:'双性/泛性', kinkLv:'中等偏高',
+         films:['多伴侣/交换','开放关系','派对场景','新鲜刺激'],
+         match:['CURI','DEMO','NYMP'], warn:['PURE','ROMA']},
+        // 9 CHRM - 魅惑体
+        {code:'CHRM', cn:'魅惑体', en:'Charmer', slogan:'魅力是我的武器',
+         desc:'你擅长用魅力和浪漫吸引他人——但吸引之后，你可能并不想负责。你享受暧昧的过程、眼神的交错、若即若离的拉扯。性对你来说是一场优雅的舞蹈。',
+         vec:{D:46,O:60,K:36,R:60,L:70,E:50,F:40,A:56,G:30,T:26},
+         atk:'双/偏攻', atkPct:50, orient:'异性/双性', kinkLv:'中等',
+         films:['浪漫剧情','暧昧氛围','高颜值CP','情感与性交织'],
+         match:['ROMA','DEMO','TEND'], warn:['WILD','SADI']},
+        // 10 CURI - 好奇探险家
+        {code:'CURI', cn:'好奇探险家', en:'Curious Explorer', slogan:'这个…我想试试',
+         desc:'你对性充满好奇心——像一个进入糖果店的孩子。从玩具到角色扮演，从轻度BDSM到性别探索，你都有兴趣尝试至少一次。"不试怎么知道喜不喜欢"是你的人生信条。',
+         vec:{D:36,O:76,K:50,R:30,L:60,E:36,F:50,A:36,G:50,T:60},
+         atk:'双', atkPct:44, orient:'双性/泛性', kinkLv:'中等',
+         films:['各类题材均有涉猎','新奇玩法','探索类','实验性内容'],
+         match:['SWNG','TOYR','FURRY'], warn:['VANI','CHILL']},
+        // 11 FURRY - 兽控者
+        {code:'FURRY', cn:'兽控者', en:'Furry Lover', slogan:'毛茸茸才是正义',
+         desc:'你对拟人化动物角色有强烈的性吸引力。兽人、毛茸茸的生物、甚至神话中的半兽——这些形象能激发你异于常人的欲望。在福瑞文化圈中你找到了归属感。',
+         vec:{D:30,O:70,K:76,R:26,L:60,E:26,F:82,A:26,G:66,T:50},
+         atk:'双/偏受', atkPct:36, orient:'双性/泛性/福瑞向', kinkLv:'高',
+         films:['福瑞/兽人动画','拟人化角色','兽耳/尾巴','福瑞同人'],
+         match:['ALIEN','DARK','CURI'], warn:['VANI','PURE']},
+        // 12 ALIEN - 异形恋
+        {code:'ALIEN', cn:'异形恋', en:'Xenophile', slogan:'人类…太无聊了',
+         desc:'你对非人类存在有强烈的性吸引力——外星生物、怪物、触手、异形、神话生物。人类的性对你来说过于平淡，你渴望超越物种的奇异体验。你的幻想中充满了异形的生殖器官和非人的交合方式。',
+         vec:{D:36,O:86,K:94,R:6,L:56,E:30,F:88,A:6,G:60,T:70},
+         atk:'双', atkPct:40, orient:'泛性/非人向', kinkLv:'极高',
+         films:['外星/异形题材','触手系','怪物/克苏鲁','非人生物','科幻猎奇'],
+         match:['DARK','FURRY','KINK'], warn:['VANI','PURE','CHILL']},
+        // 13 TOYR - 玩具大师
+        {code:'TOYR', cn:'玩具大师', en:'Toy Master', slogan:'没有玩具的人生不完整',
+         desc:'你对各类情趣玩具有着近乎痴迷的热爱——从基础跳蛋、假阳具到进阶肛塞、尿道棒，再到幻龙等奇幻造型的巨大玩具。玩具是你最忠实的性伴侣，你享受探索不同材质、形状、尺寸带来的新奇体验。',
+         vec:{D:26,O:66,K:56,R:20,L:66,E:30,F:50,A:20,G:46,T:96},
+         atk:'双/偏受', atkPct:34, orient:'双性/泛性', kinkLv:'中高',
+         films:['玩具测评/使用','DIY探索','幻想玩具/幻龙系列','尺寸探索'],
+         match:['CURI','KINK','SECR'], warn:['VANI','CHILL']},
+        // 14 FUTA - 扶她魂
+        {code:'FUTA', cn:'扶她魂', en:'Futa Spirit', slogan:'超越性别的存在',
+         desc:'你对"扶她"（同时拥有男女性征的角色）有强烈兴趣。你的性别观念高度流动，认为传统男女二元划分太过局限。男娘、假小子、扶她、双性人——跨越性别界限的形象对你极具吸引力。',
+         vec:{D:46,O:76,K:66,R:30,L:76,E:46,F:60,A:36,G:96,T:50},
+         atk:'双', atkPct:46, orient:'泛性/性别流动', kinkLv:'中高',
+         films:['扶她/双性题材','性别转换','男娘/假小子','跨性别探索'],
+         match:['DEMO','CURI','SWNG'], warn:['VANI','CHILL']},
+        // 15 TEND - 温柔引导者
+        {code:'TEND', cn:'温柔引导者', en:'Tender Guide', slogan:'别紧张，慢慢来',
+         desc:'你是温柔的引导者——性对你来说不是征服而是分享。你喜欢营造安全舒适的氛围，让对方完全放松。你关注对方的感受多于自己的快感，前戏对你而言比正戏更重要。你是"服务型"爱人。',
+         vec:{D:52,O:36,K:16,R:66,L:50,E:16,F:20,A:72,G:16,T:10},
+         atk:'偏攻/双', atkPct:54, orient:'异性/双性', kinkLv:'低',
+         films:['温柔缠绵','情感向','前戏丰富','浪漫氛围'],
+         match:['ROMA','PURE','SUBM'], warn:['SADI','WILD']},
+        // 16 ROMA - 浪漫情人
+        {code:'ROMA', cn:'浪漫情人', en:'Romantic', slogan:'没有爱的性是空虚的',
+         desc:'你是一个彻头彻尾的浪漫主义者——没有爱的性如同没有灵魂的躯壳。你需要情感连接、眼神交流、心灵共鸣，然后才能享受肉体欢愉。一夜情让你空虚，你渴望灵魂与肉体的双重契合。',
+         vec:{D:26,O:30,K:10,R:96,L:46,E:10,F:30,A:90,G:16,T:6},
+         atk:'偏受/双', atkPct:28, orient:'异性/双性', kinkLv:'极低',
+         films:['纯爱题材','情感剧情','浪漫氛围','灵肉合一'],
+         match:['PURE','TEND','CHRM'], warn:['SWNG','SADI','DARK']},
+        // 17 PURE - 纯爱战士
+        {code:'PURE', cn:'纯爱战士', en:'Pure Love', slogan:'一生一世一双人',
+         desc:'你是纯爱战士——忠诚、专一、信仰爱情。性对你来说是爱情的圣礼而非娱乐。你向往一生一世一双人的深刻羁绊，对开放式关系、多伴侣有天然排斥。你的性观念传统而坚定。',
+         vec:{D:20,O:16,K:6,R:98,L:36,E:6,F:16,A:96,G:10,T:3},
+         atk:'偏受', atkPct:24, orient:'异性/同性(忠诚专一)', kinkLv:'极低',
+         films:['纯爱故事','一对一深情','浪漫剧情','传统亲密关系'],
+         match:['ROMA','TEND','VANI'], warn:['SWNG','SADI','DARK','KINK']},
+        // 18 VANI - 香草甜心
+        {code:'VANI', cn:'香草甜心', en:'Vanilla Sweet', slogan:'简简单单就很好',
+         desc:'你是一个"香草"型的人——对猎奇、BDSM、多伴侣等非传统玩法没有兴趣。传统、温柔、充满爱意的性就足够美好。你不觉得需要新奇刺激来"调味"，简简单单的亲密接触已让你心满意足。',
+         vec:{D:16,O:10,K:3,R:56,L:40,E:6,F:10,A:56,G:10,T:3},
+         atk:'受/双', atkPct:18, orient:'异性倾向', kinkLv:'极低',
+         films:['温馨浪漫','传统亲密','轻喜剧','日常甜蜜'],
+         match:['CHILL','PURE','TEND'], warn:['DARK','KINK','ALIEN','SADI']},
+        // 19 CHILL - 佛系随缘
+        {code:'CHILL', cn:'佛系随缘', en:'Chill One', slogan:'有也行，没有也行',
+         desc:'你对性持有超然态度——有当然好，没有也无所谓。性欲不高但也不排斥。你不会主动追求性刺激，对它也没有太多幻想。生活中还有很多比性更重要更有趣的事情。你可能是asexual光谱上的某一点。',
+         vec:{D:46,O:26,K:10,R:36,L:20,E:10,F:14,A:36,G:20,T:6},
+         atk:'无倾向', atkPct:48, orient:'异性/无性倾向', kinkLv:'极低',
+         films:['不太主动观看','若有则偏好轻松温和题材'],
+         match:['VANI','PURE','TEND'], warn:['NYMP','DEMO','WILD']},
+        // 20 SECR - 闷骚隐者
+        {code:'SECR', cn:'闷骚隐者', en:'Secret Pervert', slogan:'表面平静，内心狂野',
+         desc:'你是"闷骚"的典型——外表看起来正经内敛甚至保守，但内心深处隐藏着极其丰富的幻想世界。你不太会在现实中表达欲望，但私下里——无论是观看成人内容还是自慰幻想——你都展现出与外表截然不同的狂野一面。',
+         vec:{D:30,O:50,K:46,R:40,L:56,E:20,F:66,A:46,G:30,T:40},
+         atk:'双/偏受', atkPct:32, orient:'双性', kinkLv:'中等',
+         films:['私下观看各类题材','幻想丰富','可能喜欢偷窥/露出题材'],
+         match:['CURI','TOYR','KINK'], warn:['WILD','EMPR']},
+        // 21 SUBM - 臣服者
+        {code:'SUBM', cn:'臣服者', en:'Submissive', slogan:'请支配我吧',
+         desc:'你渴望被支配——在亲密关系中你享受交出控制权的感觉。被命令、被引导、甚至被适度地"使用"，对你来说是极大的满足。你需要在关系中找到安全空间，在其中卸下日常铠甲，完全臣服于你信任的人。',
+         vec:{D:5,O:50,K:40,R:46,L:56,E:26,F:36,A:60,G:26,T:30},
+         atk:'强受', atkPct:7, orient:'异性/双性', kinkLv:'中等',
+         films:['支配/臣服','D/s关系','被引导/被掌控','权力交出'],
+         match:['MAST','PRED','EMPR'], warn:['MASO','PETV']},
+        // 22 PETV - 宠物型
+        {code:'PETV', cn:'宠物型', en:'Pet', slogan:'汪汪，主人',
+         desc:'你在Pet Play（宠物扮演）中找到了归属——你喜欢被当作"宠物"对待的感觉。戴上项圈、被抚摸、被命令、被照顾，这些让你感到安全而兴奋。你将人的复杂性简化为"主人与宠物"的单纯关系，在其中找到逃离日常压力的出口。',
+         vec:{D:3,O:56,K:50,R:52,L:50,E:20,F:46,A:66,G:36,T:36},
+         atk:'强受', atkPct:4, orient:'双性/泛性', kinkLv:'中等偏高',
+         films:['Pet Play','项圈/牵引','主人/宠物角色','被照顾/被掌控'],
+         match:['MAST','EMPR','PRED'], warn:['VANI','PURE']},
+        // 23 MASO - 受虐者
+        {code:'MASO', cn:'受虐者', en:'Masochist', slogan:'疼痛让我感到活着',
+         desc:'你在承受痛苦中获取快感——鞭打、束缚、滴蜡甚至更极端的身体刺激是你快感的放大器。你深知自己的极限，也懂得如何与信任的伴侣沟通边界。痛感对你来说不是惩罚，而是一种独特的感官体验。',
+         vec:{D:3,O:80,K:86,R:16,L:60,E:36,F:50,A:26,G:30,T:60},
+         atk:'强受', atkPct:3, orient:'双性/泛性', kinkLv:'高',
+         films:['重度BDSM受方视角','疼痛体验','极限探索','受虐与释放'],
+         match:['SADI','EMPR','DARK'], warn:['VANI','PURE','CHILL']},
+        // 24 VOYE - 窥视者
+        {code:'VOYE', cn:'窥视者', en:'Voyeur', slogan:'偷偷看着…真刺激',
+         desc:'你享受"观看"的快感——偷窥、暗中注视、甚至只是想象别人在私密时刻的样子。你也可能喜欢"被看"的感觉（露出），两者往往是一枚硬币的两面。观察本身对你来说就是一种性体验。',
+         vec:{D:16,O:50,K:36,R:20,L:56,E:66,F:40,A:16,G:20,T:20},
+         atk:'偏受', atkPct:20, orient:'异性/双性', kinkLv:'中等',
+         films:['偷窥/露出题材','暗中观察','公共场合','被观看的刺激'],
+         match:['SECR','DEMO','CURI'], warn:['PURE','ROMA']},
+        // 25 NYMP - 欲望化身
+        {code:'NYMP', cn:'欲望化身', en:'Nympho', slogan:'再来一次…还不够',
+         desc:'你拥有远超常人的性欲——性对你来说不是调剂而是刚需。你几乎随时都在想"那件事"，一天多次对你来说再正常不过。你的高欲望驱使你不断寻求满足，但也可能让你在冲动之下做出不够理性的决定。',
+         vec:{D:36,O:70,K:46,R:6,L:98,E:60,F:40,A:6,G:50,T:36},
+         atk:'双', atkPct:44, orient:'双性/泛性', kinkLv:'中等',
+         films:['高频率/高强度','多场景','不挑题材但求量大'],
+         match:['DEMO','SWNG','WILD'], warn:['CHILL','VANI']},
+        // 26 KINK - 猎奇大师 (已有code KINK? 没有，新增)
+        {code:'KINK', cn:'猎奇大师', en:'Kink Master', slogan:'常规？太无聊了',
+         desc:'你对各种非传统性实践都有深入了解和浓厚兴趣——从BDSM到异种幻想，从玩具开发到性别探索。你的猎奇不是单一方向的，而是全方位的：你喜欢在各种禁忌边界上试探，但始终保持着安全与理性的底线。',
+         vec:{D:44,O:84,K:88,R:14,L:68,E:42,F:58,A:14,G:54,T:64},
+         atk:'双', atkPct:42, orient:'泛性', kinkLv:'极高',
+         films:['全方位猎奇','BDSM+异种+玩具','黑暗幻想','禁忌探索'],
+         match:['DARK','TOYR','CURI'], warn:['VANI','PURE','CHILL']},
+        // 27 REAL - 现实主义者 (新增偏正常)
+        {code:'REAL', cn:'现实主义者', en:'Realist', slogan:'脚踏实地，享受当下',
+         desc:'你对性的态度务实而健康——不追求极端刺激，也不排斥适度探索。你把性视为生活的一部分而非全部，享受的是真实、温暖、有来有往的亲密关系。你不会沉溺于幻想，更关注实际的体验质量和双方的满意度。你的性观念成熟稳定，是伴侣眼中的"靠谱"型爱人。',
+         vec:{D:44,O:34,K:14,R:44,L:48,E:14,F:16,A:48,G:14,T:14},
+         atk:'偏攻/双', atkPct:52, orient:'异性/双性', kinkLv:'低',
+         films:['真实自然','贴近生活','温馨亲密','不过度修饰'],
+         match:['WARM','VANI','TEND'], warn:['DARK','KINK','ALIEN']},
+        // 28 WARM - 温情伴侣 (新增偏正常)
+        {code:'WARM', cn:'温情伴侣', en:'Warm Partner', slogan:'和你在一起就是最好的',
+         desc:'你把亲密关系放在性的核心——性对你来说是表达爱意和加深连接的方式。你喜欢在熟悉、舒适的环境中与伴侣慢慢享受。你不追求花样翻新，更在意的是每次亲密接触中的默契与温暖。你的温柔和耐心让你成为很多人理想中的长期伴侣。',
+         vec:{D:32,O:24,K:8,R:72,L:44,E:10,F:18,A:78,G:12,T:8},
+         atk:'双/偏受', atkPct:34, orient:'异性/双性', kinkLv:'极低',
+         films:['温馨浪漫','情感深厚','日常亲密','慢节奏享受'],
+         match:['REAL','TEND','ROMA'], warn:['SADI','DARK','NYMP']},
+    ];
+
+    // ---- 280-Question Bank ----
+    // t: text, d: [{n:dimId, p:polarity(1/-1)}], tags: ['tag1','tag2'] for secondary analysis
+    const ALL_QUESTIONS = [
+        // ======== 支配/顺从 D (20题) ========
+        {t:"在亲密关系中，我喜欢占据主导地位", d:[{n:'D',p:1}]},
+        {t:"我愿意把控制权交给对方，让ta来主导一切", d:[{n:'D',p:-1}]},
+        {t:"我喜欢给对方下指令，告诉ta该怎么做", d:[{n:'D',p:1}], tags:['bdsm']},
+        {t:"被命令、被指导让我感到兴奋", d:[{n:'D',p:-1}], tags:['bdsm']},
+        {t:"在床上，我更想当'掌控方向盘'的那个人", d:[{n:'D',p:1}]},
+        {t:"我喜欢被压制、被按住的感觉", d:[{n:'D',p:-1}]},
+        {t:"我会主动引导对方按照我的节奏来", d:[{n:'D',p:1},{n:'L',p:1}]},
+        {t:"我希望对方替我决定一切，我只需要服从", d:[{n:'D',p:-1}]},
+        {t:"我不喜欢别人告诉我该怎么做，在床上也一样", d:[{n:'D',p:1}]},
+        {t:"被绑住双手、无法反抗的感觉让我兴奋", d:[{n:'D',p:-1},{n:'K',p:1}], tags:['bondage']},
+        {t:"我喜欢'驯服'对方的过程", d:[{n:'D',p:1},{n:'K',p:1}], tags:['bdsm']},
+        {t:"我愿意戴上项圈，让伴侣牵着我", d:[{n:'D',p:-1},{n:'K',p:1}], tags:['petplay']},
+        {t:"角色扮演中，我更想扮演老师/长官/主人这类角色", d:[{n:'D',p:1}], tags:['roleplay']},
+        {t:"角色扮演中，我更想扮演学生/俘虏/仆人这类角色", d:[{n:'D',p:-1}], tags:['roleplay']},
+        {t:"我喜欢在性中使用安全词机制来划定边界", d:[{n:'D',p:1},{n:'K',p:1}], tags:['bdsm','safety']},
+        {t:"我享受'羞辱'对方（在双方同意前提下）", d:[{n:'D',p:1},{n:'K',p:1}], tags:['bdsm','humiliation']},
+        {t:"被'羞辱'（在双方同意前提下）让我兴奋", d:[{n:'D',p:-1},{n:'K',p:1}], tags:['bdsm','humiliation']},
+        {t:"我喜欢被称呼为'主人'或类似权威称谓", d:[{n:'D',p:1},{n:'K',p:1}], tags:['bdsm']},
+        {t:"我喜欢称呼对方为'主人'或类似权威称谓", d:[{n:'D',p:-1},{n:'K',p:1}], tags:['bdsm']},
+        {t:"我享受在性中保持'清醒的头脑'，不喜欢失去控制", d:[{n:'D',p:1},{n:'K',p:-1}]},
+
+        // ======== 开放程度 O (22题) ========
+        {t:"我对尝试新的性姿势持开放态度", d:[{n:'O',p:1}]},
+        {t:"我觉得传统传教士体位就足够了", d:[{n:'O',p:-1}]},
+        {t:"我愿意尝试一夜情", d:[{n:'O',p:1},{n:'A',p:-1}]},
+        {t:"我认为性应该只发生在稳定关系中", d:[{n:'O',p:-1},{n:'R',p:1}]},
+        {t:"多人性爱（3P或更多）对我有吸引力", d:[{n:'O',p:1},{n:'K',p:1}], tags:['group']},
+        {t:"开放关系/多伴侣关系是我想尝试的", d:[{n:'O',p:1},{n:'K',p:1}], tags:['poly']},
+        {t:"我坚决支持一对一的关系模式", d:[{n:'O',p:-1},{n:'R',p:1}]},
+        {t:"在公共场合做爱（有暴露风险）让我觉得很刺激", d:[{n:'O',p:1},{n:'E',p:1},{n:'K',p:1}], tags:['public']},
+        {t:"我不愿意在任何有被发现风险的地方做", d:[{n:'O',p:-1},{n:'E',p:-1}]},
+        {t:"我接受伴侣在知情同意下与其他人发生关系", d:[{n:'O',p:1}], tags:['poly']},
+        {t:"我认为嫉妒是可以克服的，不应阻碍性探索", d:[{n:'O',p:1},{n:'A',p:-1}]},
+        {t:"我无法接受伴侣与其他人有任何性接触", d:[{n:'O',p:-1},{n:'A',p:1}]},
+        {t:"我清楚地知道自己在性方面的好恶", d:[{n:'O',p:1}]},
+        {t:"我还在探索自己的性偏好，不太确定自己喜欢什么", d:[{n:'O',p:1},{n:'C',p:1}]},
+        {t:"我会主动与伴侣沟通我的性需求和幻想", d:[{n:'O',p:1}]},
+        {t:"我很难开口与伴侣讨论性方面的需求", d:[{n:'O',p:-1}]},
+        {t:"我对在户外或大自然中做爱有向往", d:[{n:'O',p:1},{n:'K',p:0.5}], tags:['outdoor']},
+        {t:"我觉得在车上做爱很刺激", d:[{n:'O',p:1}], tags:['car']},
+        {t:"我对自己的一些性幻想感到羞耻，不愿分享", d:[{n:'O',p:-1}]},
+        {t:"我完全接纳自己的性幻想，不感到羞耻", d:[{n:'O',p:1}]},
+        {t:"我愿意为伴侣尝试自己原本不感兴趣的事", d:[{n:'O',p:1},{n:'A',p:1}]},
+        {t:"我不愿为任何人改变自己的性偏好", d:[{n:'O',p:-1}]},
+
+        // ======== 猎奇 K (30题) ========
+        {t:"触手系题材让我觉得很有意思", d:[{n:'K',p:1},{n:'F',p:1}], tags:['tentacle']},
+        {t:"我对BDSM文化有深入了解或浓厚兴趣", d:[{n:'K',p:1}], tags:['bdsm']},
+        {t:"鞭打、滴蜡等痛感玩法让我兴奋", d:[{n:'K',p:1},{n:'D',p:1}], tags:['impact']},
+        {t:"被鞭打或承受痛感让我兴奋", d:[{n:'K',p:1},{n:'D',p:-1}], tags:['impact']},
+        {t:"我喜欢非常规的性幻想——比如与怪物或外星生物", d:[{n:'K',p:1},{n:'F',p:1}], tags:['xeno']},
+        {t:"'产卵'（oviposition）——在体内放入卵或蛋的幻想让我兴奋", d:[{n:'K',p:1},{n:'F',p:1}], tags:['oviposition']},
+        {t:"寄生类幻想（体内有虫或生物寄生）对我有吸引力", d:[{n:'K',p:1},{n:'F',p:1}], tags:['parasite']},
+        {t:"触手在体内产卵的题材让我感到强烈兴奋", d:[{n:'K',p:1},{n:'F',p:1}], tags:['tentacle','oviposition']},
+        {t:"我对昆虫/虫类相关的性幻想有兴趣", d:[{n:'K',p:1},{n:'F',p:1}], tags:['insect']},
+        {t:"我觉得传统性爱已经足够，不需要猎奇元素", d:[{n:'K',p:-1}]},
+        {t:"我对'人兽'题材（现实动物）有幻想", d:[{n:'K',p:1},{n:'F',p:1}], tags:['bestiality']},
+        {t:"我对'人兽'题材毫无兴趣甚至反感", d:[{n:'K',p:-1}]},
+        {t:"窒息/缺氧玩法（在安全前提下）让我兴奋", d:[{n:'K',p:1}], tags:['breathplay']},
+        {t:"血液/经血相关的内容让我兴奋", d:[{n:'K',p:1}], tags:['blood']},
+        {t:"我对尿液/排泄相关（watersports/scat）有兴趣", d:[{n:'K',p:1}], tags:['scat']},
+        {t:"我喜欢被'强迫'的感觉（在安全词保护下）", d:[{n:'K',p:1},{n:'D',p:-1}], tags:['cnc']},
+        {t:"我喜欢'强迫'对方的感觉（在安全词保护下）", d:[{n:'K',p:1},{n:'D',p:1}], tags:['cnc']},
+        {t:"我对'调教'题材（将一个人从抗拒变成服从）有强烈兴趣", d:[{n:'K',p:1},{n:'D',p:1}], tags:['training']},
+        {t:"我对绳缚/捆绑艺术有欣赏或实践兴趣", d:[{n:'K',p:1}], tags:['bondage']},
+        {t:"被绑住让我感到安全而非恐惧", d:[{n:'K',p:1},{n:'D',p:-1}], tags:['bondage']},
+        {t:"我对'乳胶/皮革'等材质有特殊的性兴奋", d:[{n:'K',p:1}], tags:['latex']},
+        {t:"我对'制服'（军装、护士装等）有性方面的偏好", d:[{n:'K',p:1},{n:'F',p:1}], tags:['uniform']},
+        {t:"我对'足部'或'鞋'有性方面的兴趣", d:[{n:'K',p:1}], tags:['foot']},
+        {t:"我对'腋下'或特定身体部位有额外的性关注", d:[{n:'K',p:1}], tags:['bodypart']},
+        {t:"我对'孕妇'或'哺乳'相关的性内容有兴趣", d:[{n:'K',p:1}], tags:['pregnant']},
+        {t:"我对'年龄差'（年上/年下）题材有偏好", d:[{n:'K',p:1},{n:'F',p:1}], tags:['agegap']},
+        {t:"我对'近亲'禁忌题材有幻想", d:[{n:'K',p:1},{n:'F',p:1}], tags:['incest']},
+        {t:"我对'教师×学生'等权力差题材有偏好", d:[{n:'K',p:1},{n:'D',p:1}], tags:['powergap']},
+        {t:"我曾主动寻找猎奇/特殊类型的成人内容", d:[{n:'K',p:1},{n:'O',p:1}]},
+        {t:"我对'绿帽'（cuckolding）幻想有兴趣", d:[{n:'K',p:1},{n:'O',p:1},{n:'D',p:-1}], tags:['cuckold']},
+
+        // ======== 浪漫/情感 R & A (24题) ========
+        {t:"我认为最好的性体验一定包含爱", d:[{n:'R',p:1},{n:'A',p:1}]},
+        {t:"性和爱可以完全分开，我接受纯肉体关系", d:[{n:'R',p:-1},{n:'A',p:-1}]},
+        {t:"做完爱后，我喜欢长时间拥抱和温存", d:[{n:'R',p:1},{n:'A',p:1}]},
+        {t:"做完爱后，我倾向于立刻分开或各做各的", d:[{n:'R',p:-1},{n:'A',p:-1}]},
+        {t:"我需要先有情感连接才能享受性", d:[{n:'R',p:1},{n:'A',p:1}]},
+        {t:"我可以和刚认识的人上床而不感到任何不适", d:[{n:'R',p:-1},{n:'A',p:-1},{n:'O',p:1}]},
+        {t:"我容易对性伴侣产生感情依赖", d:[{n:'A',p:1},{n:'R',p:1}]},
+        {t:"我从不会因性生情——性与情感是两码事", d:[{n:'A',p:-1},{n:'R',p:-1}]},
+        {t:"我希望性伴侣同时也是我最好的朋友", d:[{n:'R',p:1},{n:'A',p:1}]},
+        {t:"我享受没有'后续'的一夜情", d:[{n:'R',p:-1},{n:'A',p:-1},{n:'O',p:1}]},
+        {t:"在性之后我容易感到情绪低落或空虚", d:[{n:'A',p:1}]},
+        {t:"在性之后我总是感到满足和放松", d:[{n:'A',p:-1}]},
+        {t:"我需要后戏（aftercare）——温柔的安抚和交流", d:[{n:'A',p:1},{n:'R',p:1}]},
+        {t:"我不需要什么后戏，完事了就各忙各的", d:[{n:'A',p:-1},{n:'R',p:-1}]},
+        {t:"我喜欢事前进行长时间的调情和前戏", d:[{n:'R',p:1},{n:'A',p:1}]},
+        {t:"我更喜欢直奔主题，不喜欢太多前戏", d:[{n:'R',p:-1},{n:'L',p:1}]},
+        {t:"我喜欢被'照顾'的感觉——像被父母照顾一样", d:[{n:'D',p:-1},{n:'A',p:1}]},
+        {t:"我喜欢'照顾'对方——像照顾孩子一样", d:[{n:'D',p:1},{n:'A',p:1}]},
+        {t:"我觉得眼神交流在做爱中至关重要", d:[{n:'R',p:1},{n:'A',p:1}]},
+        {t:"做爱时我更喜欢关灯或黑暗环境", d:[{n:'R',p:-0.5},{n:'E',p:-1}]},
+        {t:"我希望伴侣在做爱时对我说'我爱你'", d:[{n:'R',p:1},{n:'A',p:1}]},
+        {t:"做爱时说情话让我觉得尴尬", d:[{n:'R',p:-1},{n:'A',p:-1}]},
+        {t:"我享受与伴侣一起度过完整的'亲密日'", d:[{n:'R',p:1},{n:'A',p:1}]},
+        {t:"我认为性就是性，不需要赋予太多意义", d:[{n:'R',p:-1},{n:'A',p:-1}]},
+
+        // ======== 欲望强度 L (14题) ========
+        {t:"我几乎每天都想自慰或做爱", d:[{n:'L',p:1}]},
+        {t:"我有时候几天甚至几周都不想性相关的事", d:[{n:'L',p:-1}]},
+        {t:"我的性欲比身边大多数人强", d:[{n:'L',p:1}]},
+        {t:"我觉得自己的性欲偏低", d:[{n:'L',p:-1}]},
+        {t:"一天多次性爱或自慰对我来说很正常", d:[{n:'L',p:1}]},
+        {t:"即使长时间没有性生活，我也不觉得难受", d:[{n:'L',p:-1}]},
+        {t:"我经常因为性欲而分心，影响工作或学习", d:[{n:'L',p:1}]},
+        {t:"性在我的生活中优先级不高", d:[{n:'L',p:-1}]},
+        {t:"我每天早上醒来第一个想的就是性", d:[{n:'L',p:1}]},
+        {t:"我可以在没有性的关系中快乐地生活", d:[{n:'L',p:-1}]},
+        {t:"我经常自慰（每周超过5次）", d:[{n:'L',p:1}]},
+        {t:"我自慰的频率很低（每月少于2次）", d:[{n:'L',p:-1}]},
+        {t:"即使很累的时候，我仍然可能有性欲", d:[{n:'L',p:1}]},
+        {t:"压力大的时候我完全没有性欲", d:[{n:'L',p:-1}]},
+
+        // ======== 表现欲/窥视 E (14题) ========
+        {t:"我幻想过在公共场合做爱或被看到", d:[{n:'E',p:1},{n:'K',p:1}], tags:['public']},
+        {t:"我绝对无法接受任何形式的'被看到'", d:[{n:'E',p:-1}]},
+        {t:"如果伴侣想看我和别人做爱，我会很兴奋", d:[{n:'E',p:1},{n:'O',p:1}]},
+        {t:"我喜欢在镜子前做爱，看着自己和对方", d:[{n:'E',p:1}]},
+        {t:"录制自己或与伴侣的性爱视频让我兴奋", d:[{n:'E',p:1}]},
+        {t:"我坚决反对录制任何性相关内容", d:[{n:'E',p:-1}]},
+        {t:"我喜欢偷偷看别人（或别人的视频）超过自己参与", d:[{n:'E',p:1},{n:'O',p:1}], tags:['voyeur']},
+        {t:"我对偷窥/露出题材的成人内容有偏好", d:[{n:'E',p:1},{n:'K',p:1}], tags:['voyeur']},
+        {t:"我喜欢在阳台上或窗户边做爱", d:[{n:'E',p:1}], tags:['public']},
+        {t:"我绝对不会在可能被看到的地方做爱", d:[{n:'E',p:-1}]},
+        {t:"我享受穿着性感内衣来'炫耀'的感觉", d:[{n:'E',p:1}]},
+        {t:"我更喜欢完全私密、无人知晓的性", d:[{n:'E',p:-1}]},
+        {t:"我幻想过自己是成人影片中的主角", d:[{n:'F',p:1},{n:'E',p:1}]},
+        {t:"我对'被偷窥'的幻想有强烈兴趣", d:[{n:'E',p:1},{n:'K',p:1}], tags:['voyeur']},
+
+        // ======== 幻想倾向 F (16题) ========
+        {t:"我的性幻想天马行空，远超现实可能", d:[{n:'F',p:1}]},
+        {t:"我的性幻想基本围绕现实可行的场景", d:[{n:'F',p:-1}]},
+        {t:"我经常沉浸在自己的性幻想世界中", d:[{n:'F',p:1},{n:'L',p:1}]},
+        {t:"我不太会幻想——我更关注当下的实际体验", d:[{n:'F',p:-1}]},
+        {t:"我的幻想中经常出现超自然/科幻元素", d:[{n:'F',p:1},{n:'K',p:1}], tags:['fantasy']},
+        {t:"我幻想过与动漫/二次元角色发生关系", d:[{n:'F',p:1},{n:'K',p:1}], tags:['anime']},
+        {t:"比起实践，我更喜欢停留在幻想的层面", d:[{n:'F',p:1}]},
+        {t:"我经常把幻想付诸实践", d:[{n:'F',p:-1},{n:'O',p:1}]},
+        {t:"我经常在性幻想中创造'剧本'和情节", d:[{n:'F',p:1}]},
+        {t:"我对成人漫画/同人志（R18本子）有偏好", d:[{n:'F',p:1},{n:'K',p:1}], tags:['manga']},
+        {t:"我对成人游戏（R18游戏）有兴趣", d:[{n:'F',p:1}], tags:['game']},
+        {t:"我对成人VR内容有浓厚兴趣", d:[{n:'F',p:1},{n:'T',p:1},{n:'O',p:1}], tags:['vr']},
+        {t:"我经常做与性相关的梦", d:[{n:'F',p:1},{n:'L',p:1}]},
+        {t:"我的幻想中经常包含'被拯救'或'被强制'的情节", d:[{n:'F',p:1},{n:'D',p:-1}]},
+        {t:"我的幻想中经常包含'拯救'或'强制'对方的情节", d:[{n:'F',p:1},{n:'D',p:1}]},
+        {t:"我幻想过与名人/偶像发生关系", d:[{n:'F',p:1}]},
+
+        // ======== 性别弹性 G (22题) ========
+        {t:"我对'男娘'（女性化的男性）有性吸引力", d:[{n:'G',p:1},{n:'K',p:1}], tags:['femboy']},
+        {t:"我对'假小子'（男性化的女性）有性吸引力", d:[{n:'G',p:1}], tags:['tomboy']},
+        {t:"我对'扶她'（同时拥有两性性征的角色）有强烈兴趣", d:[{n:'G',p:1},{n:'K',p:1},{n:'F',p:1}], tags:['futa']},
+        {t:"我认为性别不是决定吸引力的关键因素", d:[{n:'G',p:1}]},
+        {t:"我只被传统性别表达的人吸引", d:[{n:'G',p:-1}]},
+        {t:"我幻想过与变性人/跨性别者发生关系", d:[{n:'G',p:1},{n:'O',p:1}]},
+        {t:"我质疑传统的男女二元性别划分", d:[{n:'G',p:1}]},
+        {t:"我对同性有性吸引力", d:[{n:'G',p:1}], tags:['homosexual']},
+        {t:"我对同性的性吸引力为零", d:[{n:'G',p:-1}]},
+        {t:"我幻想过自己变成另一种性别来做爱", d:[{n:'G',p:1},{n:'F',p:1}]},
+        {t:"我觉得性别可以被'扮演'或'切换'是非常迷人的事", d:[{n:'G',p:1}]},
+        {t:"男娘（femboy）的形象比传统男性形象更吸引我", d:[{n:'G',p:1},{n:'K',p:1}], tags:['femboy']},
+        {t:"我能想象自己与同性建立恋爱关系", d:[{n:'G',p:1},{n:'R',p:1}], tags:['homosexual']},
+        {t:"我能想象自己与同性发生纯粹的性关系", d:[{n:'G',p:1},{n:'O',p:1}], tags:['homosexual']},
+        {t:"我对两性都有同等的吸引力", d:[{n:'G',p:1}]},
+        {t:"我的性幻想中只有异性", d:[{n:'G',p:-1}]},
+        {t:"我的性幻想中同性出现的频率很高", d:[{n:'G',p:1}], tags:['homosexual']},
+        {t:"我可以被任何性别的人吸引，只要感觉对了", d:[{n:'G',p:1}]},
+        {t:"我对'无性别'或'中性'的人有吸引力", d:[{n:'G',p:1}]},
+        {t:"我认为自己可能是双性恋", d:[{n:'G',p:1}]},
+        {t:"我认为自己可能是泛性恋", d:[{n:'G',p:1}]},
+        {t:"我对自己的性取向非常确定，从未质疑", d:[{n:'G',p:-1}]},
+
+        // ======== 道具兴趣 T (18题) ========
+        {t:"我拥有至少一件情趣玩具", d:[{n:'T',p:1},{n:'O',p:1}]},
+        {t:"我对跳蛋、振动棒等基础玩具有兴趣", d:[{n:'T',p:1}]},
+        {t:"我对假阳具/按摩棒有使用或尝试的兴趣", d:[{n:'T',p:1},{n:'O',p:1}]},
+        {t:"我对肛塞/肛门玩具有兴趣", d:[{n:'T',p:1},{n:'O',p:1},{n:'K',p:1}]},
+        {t:"我对尿道棒（尿道插入）有好奇或尝试意愿", d:[{n:'T',p:1},{n:'K',p:1}], tags:['sounding']},
+        {t:"我对幻龙/Bad Dragon等奇幻造型的巨大玩具有强烈兴趣", d:[{n:'T',p:1},{n:'K',p:1},{n:'F',p:1}], tags:['fantasytoy']},
+        {t:"我喜欢超大尺寸的玩具带来的满足感", d:[{n:'T',p:1},{n:'K',p:1}]},
+        {t:"我对拉珠/串珠类玩具有兴趣", d:[{n:'T',p:1}]},
+        {t:"我更喜欢用自己的身体而不是玩具", d:[{n:'T',p:-1}]},
+        {t:"我觉得情趣玩具破坏了性的自然美好", d:[{n:'T',p:-1}]},
+        {t:"我对电动/遥控玩具（可被伴侣远程控制）有兴趣", d:[{n:'T',p:1},{n:'D',p:-1}]},
+        {t:"我喜欢用玩具开发新的敏感区域", d:[{n:'T',p:1},{n:'O',p:1}]},
+        {t:"我对前列腺/男用玩具有了解或兴趣", d:[{n:'T',p:1},{n:'G',p:1}]},
+        {t:"我使用过或想使用肛门玩具", d:[{n:'T',p:1},{n:'O',p:1}]},
+        {t:"我喜欢用润滑液等辅助产品来增强体验", d:[{n:'T',p:1},{n:'O',p:1}]},
+        {t:"我对'双头龙'（两人共用玩具）有兴趣", d:[{n:'T',p:1},{n:'O',p:1}]},
+        {t:"我对'电击'类情趣用品有兴趣", d:[{n:'T',p:1},{n:'K',p:1}], tags:['electro']},
+        {t:"我对'真空吸引'类玩具有兴趣", d:[{n:'T',p:1},{n:'K',p:1}]},
+
+        // ======== 正常/温和性内容 — 新增 (30题) ========
+        {t:"我喜欢温柔缓慢的性节奏，而非快速激烈", d:[{n:'K',p:-0.5},{n:'R',p:1}], tags:['gentle']},
+        {t:"我更喜欢快速、激烈的性爱", d:[{n:'L',p:1}], tags:['intense']},
+        {t:"我喜欢在做爱时播放音乐营造氛围", d:[{n:'R',p:1},{n:'A',p:1}], tags:['ambiance']},
+        {t:"在做爱时我喜欢完全没有干扰的安静环境", d:[{n:'A',p:1}], tags:['ambiance']},
+        {t:"我觉得性爱后的聊天和温存与性同样重要", d:[{n:'R',p:1},{n:'A',p:1}]},
+        {t:"我觉得口交是性爱中不可或缺的一部分", d:[{n:'O',p:1}]},
+        {t:"我对口交不太感兴趣", d:[{n:'O',p:-1}]},
+        {t:"我喜欢在床上尝试多种体位变换", d:[{n:'O',p:1}]},
+        {t:"我有一两个最喜欢的体位，不太需要变换", d:[{n:'O',p:-1}]},
+        {t:"我享受'早晨性爱'——慵懒而亲密", d:[{n:'R',p:1},{n:'A',p:1}], tags:['morning']},
+        {t:"我更喜欢'深夜性爱'——激情而投入", d:[{n:'L',p:1}], tags:['night']},
+        {t:"我喜欢在度假或酒店时做爱——环境变化带来新鲜感", d:[{n:'O',p:1}], tags:['travel']},
+        {t:"就算在熟悉的环境里我也能获得满足", d:[{n:'O',p:-1}]},
+        {t:"我觉得幽默和笑声也是性爱的一部分", d:[{n:'A',p:1},{n:'R',p:1}]},
+        {t:"我认为性爱是一件严肃的事，不应嬉笑", d:[{n:'A',p:-1},{n:'R',p:-1}]},
+        {t:"我喜欢在性中有'被渴望'的感觉", d:[{n:'A',p:1},{n:'R',p:1}]},
+        {t:"我喜欢'渴望对方'的感觉超过被渴望", d:[{n:'D',p:1},{n:'L',p:1}]},
+        {t:"我喜欢在做爱前先一起洗澡或按摩来放松", d:[{n:'R',p:1},{n:'A',p:1}], tags:['foreplay']},
+        {t:"我享受偶尔的'快速解决'——不需要太多铺垫", d:[{n:'R',p:-1},{n:'L',p:1}], tags:['quickie']},
+        {t:"我喜欢在做爱时用枕头垫高或调整角度", d:[{n:'O',p:1},{n:'T',p:0.5}]},
+        {t:"我享受在沙发、地板或桌子等非传统位置做爱", d:[{n:'O',p:1}], tags:['location']},
+        {t:"我严格偏好只在床上做爱", d:[{n:'O',p:-1}]},
+        {t:"我喜欢在做爱时开着灯，清晰地看到对方", d:[{n:'E',p:1}]},
+        {t:"我喜欢昏暗的灯光或烛光，更有氛围感", d:[{n:'R',p:1},{n:'E',p:-0.5}]},
+        {t:"我喜欢在做爱时使用枕头或家具来辅助体位", d:[{n:'O',p:1}]},
+        {t:"我享受在淋浴或浴缸中做爱", d:[{n:'O',p:1}], tags:['shower']},
+        {t:"我享受与伴侣一起看成人影片来'助兴'", d:[{n:'O',p:1},{n:'E',p:1}]},
+        {t:"我绝对不会与伴侣一起看成人影片", d:[{n:'O',p:-1},{n:'E',p:-1}]},
+        {t:"我享受在性爱中'慢慢来'——花一两个小时也不急", d:[{n:'R',p:1},{n:'A',p:1}]},
+        {t:"我喜欢高效的性爱——半小时内解决战斗", d:[{n:'R',p:-1},{n:'L',p:1}]},
+
+        // ======== 片型观看偏好 — 新增 (24题) ========
+        {t:"我更喜欢看有剧情的成人影片，而非纯动作", d:[{n:'F',p:1},{n:'R',p:1}], tags:['story']},
+        {t:"我更喜欢纯动作、无剧情的成人影片", d:[{n:'F',p:-1},{n:'R',p:-1}], tags:['action']},
+        {t:"我喜欢看'素人'或'真实'风格的成人内容", d:[{n:'K',p:-1}], tags:['amateur']},
+        {t:"我喜欢制作精良、有艺术感的成人内容", d:[{n:'F',p:1},{n:'K',p:-1}], tags:['professional']},
+        {t:"我偏好亚洲成人内容", d:[{n:'G',p:1}], tags:['asian']},
+        {t:"我偏好欧美成人内容", d:[{n:'G',p:1}], tags:['western']},
+        {t:"我对成人内容的地域/种族没有特别偏好", d:[{n:'G',p:1}]},
+        {t:"我更喜欢第一人称视角（POV）的成人内容", d:[{n:'F',p:1}], tags:['pov']},
+        {t:"我更喜欢第三人称视角（看到完整场景和人物）", d:[{n:'F',p:-1}], tags:['thirdperson']},
+        {t:"我看成人影片时更关注生殖器官的特写", d:[{n:'K',p:0.5}], tags:['closeup']},
+        {t:"我更喜欢看到参与者的面部表情", d:[{n:'A',p:1},{n:'R',p:1}], tags:['face']},
+        {t:"有没有脸无所谓，我更关注身体和动作", d:[{n:'A',p:-1},{n:'R',p:-1}], tags:['noface']},
+        {t:"我更喜欢看专业的成人影片（有剧本、有导演）", d:[{n:'F',p:1}], tags:['professional']},
+        {t:"我更喜欢看素人自拍/真实情侣的内容", d:[{n:'F',p:-1},{n:'R',p:1}], tags:['amateur']},
+        {t:"我偏好单人自慰的成人内容", d:[{n:'E',p:1}], tags:['solo']},
+        {t:"我偏好双人或多人互动的成人内容", d:[{n:'O',p:1}], tags:['couple']},
+        {t:"我喜欢看有'故事背景'的成人内容，哪怕故事很俗套", d:[{n:'F',p:1},{n:'R',p:1}], tags:['story']},
+        {t:"我经常跳过剧情部分直接看'关键段落'", d:[{n:'R',p:-1},{n:'L',p:1}], tags:['skip']},
+        {t:"我对成人内容的画质要求很高，低画质让我看不下去", d:[{n:'O',p:1}], tags:['quality']},
+        {t:"我对成人内容的时长有偏好——更喜欢20分钟以内的短片", d:[{n:'L',p:0.5}], tags:['short']},
+        {t:"我偏好30分钟以上的长片，觉得更有沉浸感", d:[{n:'R',p:1},{n:'F',p:1}], tags:['long']},
+        {t:"我更喜欢看'一对一'的成人内容", d:[{n:'O',p:-1}], tags:['1v1']},
+        {t:"我更喜欢看'多人'或'群交'题材", d:[{n:'O',p:1},{n:'K',p:1}], tags:['group']},
+        {t:"我对成人影片中的声音很敏感——好的声音表现很重要", d:[{n:'R',p:1},{n:'A',p:1}], tags:['audio']},
+
+        // ======== 更多性癖探测 — 新增 (18题) ========
+        {t:"我对'气味'（伴侣的体味、汗味等）有性方面的关注", d:[{n:'K',p:1}], tags:['scent']},
+        {t:"我对'声音'（喘息、呻吟、ASMR等）有特别的性兴奋", d:[{n:'K',p:1}], tags:['audio']},
+        {t:"我对'毛发'（体毛、头发等）有性方面的关注", d:[{n:'K',p:1}], tags:['hair']},
+        {t:"我对'肌肉'有特别的性吸引力", d:[{n:'K',p:-0.5}]},
+        {t:"我对'胖/丰满'的体型有特别的性偏好", d:[{n:'K',p:0.5}], tags:['bodytype']},
+        {t:"我对'瘦/纤细'的体型有特别的性偏好", d:[{n:'K',p:-0.5}], tags:['bodytype']},
+        {t:"我对'纹身/穿孔'等身体装饰有性方面的兴趣", d:[{n:'K',p:1}], tags:['tattoo']},
+        {t:"我对'眼镜'等特定配饰有性方面的偏好", d:[{n:'K',p:0.5}], tags:['glasses']},
+        {t:"我经常关注成人内容中的服装和造型", d:[{n:'F',p:1},{n:'K',p:0.5}], tags:['costume']},
+        {t:"我对'沐浴/洗澡'场景的成人内容有偏好", d:[{n:'O',p:1}], tags:['shower']},
+        {t:"我对'按摩'演变到性的情节有偏好", d:[{n:'R',p:1},{n:'A',p:1}], tags:['massage']},
+        {t:"我对'催眠/精神控制'类的性幻想有兴趣", d:[{n:'K',p:1},{n:'F',p:1}], tags:['hypno']},
+        {t:"我对'时间停止'等超能力类的性幻想有兴趣", d:[{n:'K',p:1},{n:'F',p:1}], tags:['timestop']},
+        {t:"我对'变身/变形'类的性幻想有兴趣", d:[{n:'K',p:1},{n:'F',p:1},{n:'G',p:1}], tags:['transform']},
+        {t:"我对'机械/机器人'相关的性幻想有兴趣", d:[{n:'K',p:1},{n:'F',p:1}], tags:['robot']},
+        {t:"我对'植物/藤蔓'相关的性幻想有兴趣", d:[{n:'K',p:1},{n:'F',p:1}], tags:['plant']},
+        {t:"我对'史莱姆/软体生物'相关的性幻想有兴趣", d:[{n:'K',p:1},{n:'F',p:1}], tags:['slime']},
+        {t:"我对'幽灵/透明人'等不可见存在的性幻想有兴趣", d:[{n:'K',p:1},{n:'F',p:1}], tags:['ghost']},
+
+        // ======== 冷门性癖与性取向细化 (18题) ========
+        {t:"我对'食糞/排泄'相关的内容有兴趣（scat）", d:[{n:'K',p:1}], tags:['scat']},
+        {t:"我对'呕吐'相关内容有兴趣（emetophilia）", d:[{n:'K',p:1}], tags:['emeto']},
+        {t:"我对'穿刺/针'相关内容有兴趣（play piercing）", d:[{n:'K',p:1}], tags:['needle']},
+        {t:"我对'医疗/检查'场景的性幻想有兴趣", d:[{n:'K',p:1}], tags:['medical']},
+        {t:"我对'木乃伊化/全身包裹'（mummification）有兴趣", d:[{n:'K',p:1}], tags:['mummy']},
+        {t:"我对'被活埋/密闭空间'类幻想有兴趣", d:[{n:'K',p:1}], tags:['buried']},
+        {t:"我对'食人/吞噬'类极端幻想有兴趣（仅幻想层面）", d:[{n:'K',p:1},{n:'F',p:1}], tags:['vore']},
+        {t:"我对'巨大化/缩小化'的性幻想有兴趣（macro/micro）", d:[{n:'K',p:1},{n:'F',p:1}], tags:['macro']},
+        {t:"我对'被变成家具或物品'的幻想有兴趣", d:[{n:'K',p:1},{n:'F',p:1}], tags:['objectify']},
+        {t:"我认为自己可能是无性恋（asexual）谱系上的一员", d:[{n:'L',p:-1},{n:'G',p:0.5}]},
+        {t:"我对性本身没有太多兴趣，但享受浪漫关系", d:[{n:'L',p:-1},{n:'R',p:1},{n:'A',p:1}]},
+        {t:"我对浪漫关系没有兴趣，但性对我很重要", d:[{n:'R',p:-1},{n:'A',p:-1},{n:'L',p:1}]},
+        {t:"我既没有性欲望也没有浪漫欲望（aromantic asexual可能）", d:[{n:'L',p:-1},{n:'R',p:-1},{n:'A',p:-1}]},
+        {t:"我的性取向是流动的，会随着时间和情境变化", d:[{n:'G',p:1},{n:'O',p:1}]},
+        {t:"我对'无性别者'（agender）或'中性者'也有吸引力", d:[{n:'G',p:1}]},
+        {t:"我对自己的生理性别感到不适，希望改变", d:[{n:'G',p:1}], tags:['trans']},
+        {t:"我对自己的生理性别完全满意", d:[{n:'G',p:-1}]},
+        {t:"我曾认真思考过自己的性别认同", d:[{n:'G',p:1}]},
+
+        // ======== Pet Play & 角色扮演深化 (8题) ========
+        {t:"我幻想过自己被当作猫/狗等宠物对待", d:[{n:'K',p:1},{n:'D',p:-1},{n:'F',p:1}], tags:['petplay']},
+        {t:"我幻想过把对方当作宠物来对待", d:[{n:'K',p:1},{n:'D',p:1},{n:'F',p:1}], tags:['petplay']},
+        {t:"戴上项圈、被抚摸头部的场景让我心动", d:[{n:'K',p:1},{n:'D',p:-1}], tags:['petplay']},
+        {t:"我喜欢用'乖'、'好孩子'等宠物化语言被称赞", d:[{n:'K',p:1},{n:'D',p:-1}], tags:['petplay']},
+        {t:"我喜欢用'乖'、'好孩子'等宠物化语言称赞对方", d:[{n:'K',p:1},{n:'D',p:1}], tags:['petplay']},
+        {t:"我对'兽耳/尾巴'等cosplay道具有性方面的兴趣", d:[{n:'K',p:1},{n:'F',p:1}], tags:['cosplay','furry']},
+        {t:"我喜欢在性中完全'变成'另一个角色", d:[{n:'F',p:1},{n:'G',p:1}], tags:['roleplay']},
+        {t:"角色扮演让我觉得尴尬，我更喜欢做自己", d:[{n:'F',p:-1}]},
+
+        // ======== 异种/怪物/克苏鲁 (10题) ========
+        {t:"拟人化的动物角色（福瑞/Furry）对我有性吸引力", d:[{n:'K',p:1},{n:'F',p:1},{n:'G',p:1}], tags:['furry']},
+        {t:"狼人、猫娘等半人半兽的形象让我兴奋", d:[{n:'K',p:1},{n:'F',p:1}], tags:['furry']},
+        {t:"我幻想过与兽人（Orc）、龙人之类的奇幻生物发生关系", d:[{n:'K',p:1},{n:'F',p:1}], tags:['fantasy']},
+        {t:"我对福瑞文化完全无感", d:[{n:'K',p:-1},{n:'F',p:-1}]},
+        {t:"相比人类，我更容易对非人类角色产生性幻想", d:[{n:'K',p:1},{n:'F',p:1}], tags:['xeno']},
+        {t:"我幻想过与外星生物发生关系", d:[{n:'K',p:1},{n:'F',p:1}], tags:['xeno']},
+        {t:"触手、异形生殖器官等非人设定让我很有感觉", d:[{n:'K',p:1},{n:'F',p:1}], tags:['tentacle']},
+        {t:"克苏鲁式的'不可名状'存在对我有奇异的吸引力", d:[{n:'K',p:1},{n:'F',p:1}], tags:['cthulhu']},
+        {t:"我对'非人'题材完全无法接受", d:[{n:'K',p:-1}]},
+        {t:"我对'异种奸'（人类×非人类生物）题材有兴趣", d:[{n:'K',p:1},{n:'F',p:1}], tags:['xeno']},
+
+        // ======== 多人/开放关系补充 (6题) ========
+        {t:"我幻想过与多人同时发生关系（gangbang/乱交）", d:[{n:'K',p:1},{n:'O',p:1},{n:'F',p:1}], tags:['gangbang']},
+        {t:"我幻想过被'陌生人'在不知情的情况下侵犯（CNC幻想）", d:[{n:'K',p:1},{n:'F',p:1},{n:'D',p:-1}], tags:['cnc']},
+        {t:"我对'交换伴侣'（swinging）有兴趣", d:[{n:'O',p:1},{n:'K',p:1}], tags:['swing']},
+        {t:"我对'被多人注视'的幻想有兴趣", d:[{n:'E',p:1},{n:'K',p:1}], tags:['exhibition']},
+        {t:"我对'看伴侣与别人做爱'的幻想有兴趣", d:[{n:'E',p:1},{n:'K',p:1},{n:'O',p:1}], tags:['cuckold','voyeur']},
+        {t:"我绝对无法接受任何形式的多人性关系", d:[{n:'O',p:-1},{n:'K',p:-1}]},
+    ];
+
+    // ---- State ----
+    const TOTAL_DRAW = 85;
+    let drawn = [];
+    let answers = {}; // idx -> 0..4
+    let currentIdx = 0;
+
+    // ---- Helpers ----
+    function shuffle(arr){
+        const a = arr.slice();
+        for(let i=a.length-1;i>0;i--){
+            const j = Math.floor(Math.random()*(i+1));
+            [a[i],a[j]] = [a[j],a[i]];
+        }
+        return a;
+    }
+    function clamp(v,lo,hi){ return Math.max(lo,Math.min(hi,v)); }
+
+    // ---- Draw questions ----
+    function drawQuestions(){
+        drawn = shuffle([...Array(ALL_QUESTIONS.length).keys()]).slice(0, TOTAL_DRAW);
+        answers = {};
+        currentIdx = 0;
+    }
+
+    // ---- Compute dimension scores (加权) ----
+    function computeScores(){
+        const scores = {};
+        DIMS.forEach(d => { scores[d.id] = {raw:0, count:0, weightedRaw:0}; });
+        drawn.forEach((qi, idx)=>{
+            const ans = answers[idx];
+            if(ans === undefined) return;
+            const val = ans - 2; // -2..+2
+            const q = ALL_QUESTIONS[qi];
+            q.d.forEach(({n,p})=>{
+                if(scores[n]){
+                    const dimWeight = (DIMS.find(d=>d.id===n)||{}).weight||1.0;
+                    scores[n].raw += val * p;
+                    scores[n].weightedRaw += val * p * dimWeight;
+                    scores[n].count += 1;
+                }
+            });
+        });
+        const norm = {};
+        DIMS.forEach(d=>{
+            const s = scores[d.id];
+            if(s.count===0){ norm[d.id]=50; }
+            else{
+                const frac = s.raw / (s.count * 2);
+                norm[d.id] = clamp(Math.round((frac + 1) * 50), 0, 100);
+            }
+        });
+        return norm;
+    }
+
+    // ---- Match personality (加权欧几里得距离) ----
+    function matchPersonality(scores){
+        let best = null, bestDist = Infinity;
+        const allDists = [];
+        PERSONALITIES.forEach(p=>{
+            let dist = 0;
+            DIMS.forEach(d=>{
+                const sv = scores[d.id] || 50;
+                const pv = p.vec[d.id] !== undefined ? p.vec[d.id] : 50;
+                const w = d.weight || 1.0;
+                dist += w * Math.pow(sv - pv, 2);
+            });
+            dist = Math.sqrt(dist);
+            allDists.push({p, dist});
+            if(dist < bestDist){ bestDist = dist; best = p; }
+        });
+        // Get top 3 for matches
+        allDists.sort((a,b)=>a.dist - b.dist);
+        return {personality:best, distance:bestDist, topMatches:allDists.slice(0,5)};
+    }
+
+    // ---- Secondary analysis: tags from answers ----
+    function analyzeTags(){
+        const tagCounts = {};
+        drawn.forEach((qi, idx)=>{
+            const ans = answers[idx];
+            if(ans === undefined) return;
+            const val = ans - 2; // -2..+2
+            const q = ALL_QUESTIONS[qi];
+            if(q.tags && val > 0){
+                q.tags.forEach(t=>{
+                    tagCounts[t] = (tagCounts[t]||0) + val;
+                });
+            }
+        });
+        return tagCounts;
+    }
+
+    // ---- Derive extra analyses ----
+    function deriveAnalyses(scores, pers, tagCounts){
+        const dScore = scores['D'] || 50;
+        const gScore = scores['G'] || 50;
+        const kScore = scores['K'] || 0;
+        const oScore = scores['O'] || 50;
+        const rScore = scores['R'] || 50;
+        const aScore = scores['A'] || 50;
+        const lScore = scores['L'] || 50;
+        const fScore = scores['F'] || 50;
+        const eScore = scores['E'] || 50;
+        const tScore = scores['T'] || 50;
+
+        // Attack/Receive
+        let atkPct = Math.round(dScore * 0.65 + (100 - gScore) * 0.15 + (100 - aScore) * 0.2);
+        atkPct = clamp(atkPct, 0, 100);
+        let roleLabel = '';
+        if(atkPct >= 88) roleLabel = '绝对强攻';
+        else if(atkPct >= 72) roleLabel = '偏攻';
+        else if(atkPct >= 56) roleLabel = '双偏攻';
+        else if(atkPct >= 44) roleLabel = '双向/可攻可受';
+        else if(atkPct >= 30) roleLabel = '双偏受';
+        else if(atkPct >= 14) roleLabel = '偏受';
+        else roleLabel = '强受';
+
+        // Orientation (详细)
+        const homoTag = (tagCounts['homosexual']||0);
+        const femboyTag = (tagCounts['femboy']||0);
+        const futaTag = (tagCounts['futa']||0);
+        let orientDetail = '';
+        let orientBrief = '';
+        if(gScore >= 80){
+            orientBrief = '泛性恋/性别无界';
+            orientDetail = '你对性别几乎没有筛选——无论男性、女性、非二元性别者、跨性别者，只要感觉对了，都可能成为你的吸引对象。你的性取向高度流动，可能更接近于"泛性恋"（pansexual）或"全性恋"（omnisexual）的范畴。对你而言，一个人的性别远不如ta的气质、能量和与你之间的化学反应重要。';
+        } else if(gScore >= 60){
+            orientBrief = '双性倾向明显';
+            orientDetail = '你对两性都有明确的性吸引力，双性恋（bisexual）是最接近的描述。你可能对男性和女性的吸引方式不同——比如对男性更多是肉体吸引，对女性更多是情感吸引，或反之——但两性在你的性地图上都占据重要位置。你可能也会对非二元性别者开放。';
+        } else if(gScore >= 40){
+            orientBrief = '双性开放/异性为主';
+            orientDetail = '你主要以异性为吸引对象，但对同性也保持着一定程度的开放心态。你可能在特定情境下或对特定类型的人产生同性吸引——比如对"男娘"或"假小子"等跨越传统性别表达的人。你可能更接近于"异性恋但灵活"（heteroflexible）的范畴。';
+        } else if(gScore >= 25){
+            orientBrief = '异性倾向为主';
+            orientDetail = '你的性吸引力主要指向异性。你对同性的性兴趣很低，但不排除在极特定情况下产生好奇或微弱吸引。传统的异性恋标签基本适用于你，但你并不排斥性别多元的理念。';
+        } else {
+            orientBrief = '异性倾向';
+            orientDetail = '你的性吸引力几乎完全指向异性。你对同性没有性方面的兴趣，性别二元论在你的性取向中非常清晰。这是最常见也最传统的性取向模式。';
+        }
+        // Extra nuance
+        if(homoTag > 3) orientDetail += ' 你在测试中对同性相关题目给出了较高评分，这可能意味着你内心对同性吸引有潜在的开放性，值得进一步自我探索。';
+        if(femboyTag > 2 || futaTag > 2) orientDetail += ' 你对跨越传统性别边界的形象（如男娘、扶她等）表现出了兴趣，这暗示你的性取向可能比传统异性恋更为灵活。';
+
+        // Kink level (详细)
+        let kinkLvBrief = '';
+        let kinkDetail = '';
+        if(kScore >= 85){
+            kinkLvBrief = '极重度猎奇';
+            kinkDetail = '你的猎奇指数达到了最高等级。你对各种极端、禁忌和非传统的性内容都有强烈的兴趣——包括但不限于BDSM、异种幻想、寄生/产卵、触手、身体改造幻想等。你的性幻想世界广阔而深邃，常人避之不及的题材对你来说正是兴奋的源泉。请注意区分幻想与现实，确保任何实践都在安全、知情、同意的前提下进行。';
+        } else if(kScore >= 70){
+            kinkLvBrief = '重度猎奇';
+            kinkDetail = '你的猎奇指数很高。你对BDSM、幻想题材、非常规性实践有明确的偏好。你可能已经尝试过一些猎奇玩法，或至少对其有深入了解。你享受在安全边界内探索禁忌的快感。';
+        } else if(kScore >= 50){
+            kinkLvBrief = '中度猎奇';
+            kinkDetail = '你对猎奇内容有一定兴趣，但不极端。你可能会享受轻度BDSM、角色扮演、新奇玩具或偶尔的禁忌幻想，但这些不是你性的必需品。你是一个"适度探索者"——愿意尝试新鲜事物但不会走得太远。';
+        } else if(kScore >= 30){
+            kinkLvBrief = '轻度探索';
+            kinkDetail = '你的猎奇指数偏低，主要偏好传统性爱，但偶尔会有一点点好奇心。你可能对某些温和的"非传统"玩法（如轻度捆绑、情趣内衣、基础玩具）保持开放，但总体上你更喜欢经典、舒适的性体验。';
+        } else if(kScore >= 15){
+            kinkLvBrief = '微量猎奇';
+            kinkDetail = '你基本不需要猎奇元素。传统、温柔、充满爱意的性对你来说已经足够。你对BDSM、异种幻想等几乎没有兴趣，也从未主动寻找过此类内容。';
+        } else {
+            kinkLvBrief = '纯香草';
+            kinkDetail = '你是"纯香草"型的人格——对任何猎奇内容都毫无兴趣甚至排斥。传统的一对一、充满爱意的性是你唯一的偏好。你对非常规性实践的接受度极低。';
+        }
+
+        // Kink sub-analysis
+        const kinkSubs = [];
+        if((tagCounts['bdsm']||0) > 2) kinkSubs.push('BDSM/权力交换');
+        if((tagCounts['bondage']||0) > 2) kinkSubs.push('绳缚/捆绑');
+        if((tagCounts['impact']||0) > 1) kinkSubs.push('击打/痛感');
+        if((tagCounts['xeno']||0) > 1) kinkSubs.push('异种/外星');
+        if((tagCounts['tentacle']||0) > 1) kinkSubs.push('触手系');
+        if((tagCounts['oviposition']||0) > 1) kinkSubs.push('产卵/寄生');
+        if((tagCounts['furry']||0) > 1) kinkSubs.push('福瑞/兽人');
+        if((tagCounts['futa']||0) > 1) kinkSubs.push('扶她/双性');
+        if((tagCounts['femboy']||0) > 1) kinkSubs.push('男娘');
+        if((tagCounts['petplay']||0) > 1) kinkSubs.push('宠物扮演');
+        if((tagCounts['cnc']||0) > 1) kinkSubs.push('CNC/强制幻想');
+        if((tagCounts['cuckold']||0) > 1) kinkSubs.push('绿帽/交换');
+        if((tagCounts['blood']||0) > 1) kinkSubs.push('血液');
+        if((tagCounts['scat']||0) > 1) kinkSubs.push('排泄/重口');
+        if((tagCounts['fantasytoy']||0) > 1) kinkSubs.push('幻想玩具/幻龙');
+        if((tagCounts['sounding']||0) > 1) kinkSubs.push('尿道刺激');
+        if(kinkSubs.length===0 && kScore<30) kinkSubs.push('无明显猎奇偏好');
+
+        // Film preferences (详细)
+        const filmAnalysis = buildFilmAnalysis(scores, tagCounts);
+
+        // Matches & warns
+        const matches = findMatchesWithDetail(pers);
+        const warns = findWarnsWithDetail(pers);
+
+        return {atkPct, roleLabel, orientBrief, orientDetail, kinkLvBrief, kinkDetail, kinkSubs, filmAnalysis, matches, warns};
+    }
+
+    function buildFilmAnalysis(scores, tagCounts){
+        const parts = [];
+        const o=scores['O'], k=scores['K'], r=scores['R'], f=scores['F'], e=scores['E'];
+
+        // 视角偏好
+        if((tagCounts['pov']||0) > 1) parts.push('你偏好<strong>第一人称视角（POV）</strong>的成人内容——这种视角让你更有代入感，仿佛自己就是参与者。你可能不太在意看到表演者的脸，更关注身体和器官的近距离特写。');
+        else if((tagCounts['thirdperson']||0) > 1 || f < 40) parts.push('你偏好<strong>第三人称视角</strong>的成人内容——你享受看到完整的场景、人物的表情和互动，像一个观察者一样欣赏整个过程。');
+        else parts.push('你对视角没有强烈偏好，第一人称和第三人称都能接受。');
+
+        // 脸vs身体
+        if((tagCounts['face']||0) > 1) parts.push('你<strong>重视面部表情</strong>——对情欲的视觉呈现很敏感，喜欢看到参与者的真实反应和情感流露。');
+        if((tagCounts['noface']||0) > 1 || (tagCounts['closeup']||0) > 1) parts.push('你<strong>不太在意是否看到脸</strong>——你更关注身体部位和动作本身，器官特写对你来说比面部表情更有吸引力。');
+
+        // 专业vs素人
+        if((tagCounts['professional']||0) > 1) parts.push('你偏好<strong>专业制作的成人内容</strong>——高质量的拍摄、清晰的画质、精心的编排对你来说很重要。');
+        if((tagCounts['amateur']||0) > 1) parts.push('你偏好<strong>素人/真实风格的成人内容</strong>——你享受那种未经修饰的真实感，专业制作反而让你觉得"太假"。');
+
+        // 剧情vs无剧情
+        if((tagCounts['story']||0) > 1 || r > 60) parts.push('你喜欢<strong>有剧情的成人内容</strong>——哪怕剧情简单俗套，前期的铺垫和情境设定也能让你更好地进入状态。');
+        if((tagCounts['skip']||0) > 1 || r < 30) parts.push('你偏好<strong>跳过剧情直奔主题</strong>——你没什么耐心看铺垫，最关注的是"关键部分"。');
+
+        // 1v1 vs group
+        if((tagCounts['1v1']||0) > 1 || o < 40) parts.push('你偏好<strong>一对一</strong>的内容——简单、专注、亲密感更强。');
+        if((tagCounts['group']||0) > 1 || (tagCounts['gangbang']||0) > 1) parts.push('你对<strong>多人/群交</strong>题材有兴趣——混乱、刺激、多人互动的视觉冲击力对你有吸引力。');
+
+        // 地域
+        if((tagCounts['asian']||0) > 1) parts.push('你对<strong>亚洲成人内容</strong>有偏好。');
+        if((tagCounts['western']||0) > 1) parts.push('你对<strong>欧美成人内容</strong>有偏好。');
+
+        // 声音
+        if((tagCounts['audio']||0) > 1) parts.push('你对成人内容中的<strong>声音表现</strong>很敏感——好的喘息、呻吟和音效对你来说很重要，甚至可能偏好ASMR风格的成人音频。');
+
+        // 画质/时长
+        if((tagCounts['quality']||0) > 1) parts.push('你对<strong>画质要求较高</strong>，低画质内容会让你失去兴趣。');
+        if((tagCounts['short']||0) > 1) parts.push('你偏好<strong>短片</strong>（20分钟以内），快速高效地满足需求。');
+        if((tagCounts['long']||0) > 1) parts.push('你偏好<strong>长片</strong>（30分钟以上），享受慢慢沉浸其中的感觉。');
+
+        // Solo
+        if((tagCounts['solo']||0) > 1) parts.push('你对<strong>单人自慰</strong>类内容有偏好。');
+
+        // 特定场景
+        const sceneTags = [];
+        if((tagCounts['public']||0) > 1) sceneTags.push('公共场合/露出');
+        if((tagCounts['outdoor']||0) > 1) sceneTags.push('户外/自然');
+        if((tagCounts['car']||0) > 1) sceneTags.push('车内');
+        if((tagCounts['shower']||0) > 1) sceneTags.push('浴室/淋浴');
+        if(sceneTags.length>0) parts.push('你对以下场景有特别偏好：<strong>'+sceneTags.join('、')+'</strong>。');
+
+        if(parts.length===0) parts.push('你对成人内容的观看偏好比较均衡，没有特别明显的倾向——各类题材和风格都可能接受。');
+
+        return parts;
+    }
+
+    function findMatchesWithDetail(pers){
+        if(!pers.match) return [];
+        return pers.match.map(code=>{
+            const p = PERSONALITIES.find(x=>x.code===code);
+            if(!p) return {code, cn:code, detail:''};
+            let detail = '';
+            if(code==='SUBM') detail = '臣服者渴望被你这样的人支配，你们的权力交换将非常默契。';
+            else if(code==='PETV') detail = '宠物型人格会被你的掌控力吸引，你们的主宠关系天然契合。';
+            else if(code==='MAST') detail = '掌控者与你互相理解——你们都懂得权力游戏的乐趣。';
+            else if(code==='MASO') detail = '受虐者需要你这样的施虐者，你们在BDSM光谱上完美互补。';
+            else if(code==='SADI') detail = '施虐者能与你的受虐倾向形成互补。';
+            else if(code==='PURE') detail = '纯爱战士与你共享对忠诚和深度的追求。';
+            else if(code==='ROMA') detail = '浪漫情人理解你对情感连接的需求。';
+            else if(code==='TEND') detail = '温柔引导者能给你安全感和细腻的关怀。';
+            else if(code==='VANI') detail = '香草甜心与你偏好相近，都不需要太刺激的玩法。';
+            else if(code==='CHILL') detail = '佛系随缘与你都不把性看得太重，相处轻松无压力。';
+            else if(code==='DEMO') detail = '魅魔体质与你一样充满魅力，你们的碰撞火花四溅。';
+            else if(code==='CURI') detail = '好奇探险家会陪你一起探索新领域。';
+            else if(code==='SWNG') detail = '自由玩咖与你在开放关系上理念一致。';
+            else if(code==='NYMP') detail = '欲望化身能匹配你的高需求。';
+            else if(code==='WILD') detail = '野兽派与你一样直接，不需要矫饰。';
+            else if(code==='DARK') detail = '暗黑者与你共享对禁忌的兴趣。';
+            else if(code==='ALIEN') detail = '异形恋者能理解你对非人存在的迷恋。';
+            else if(code==='KINK') detail = '猎奇大师就是你最好的同好——你们几乎什么都想试。';
+            else if(code==='TOYR') detail = '玩具大师会和你一起探索玩具的无限可能。';
+            else if(code==='FURRY') detail = '兽控者与你共享福瑞文化的归属感。';
+            else if(code==='REAL') detail = '现实主义者与你的务实态度非常合拍。';
+            else if(code==='WARM') detail = '温情伴侣能给你最舒适的亲密体验。';
+            else if(code==='CHRM') detail = '魅惑体与你互相吸引——你们都是魅力型选手。';
+            else if(code==='PRED') detail = '狩猎者理解你掌控全局的欲望。';
+            else if(code==='EMPR') detail = '帝王/女王能满足你被支配的渴望。';
+            else if(code==='SECR') detail = '闷骚隐者与你一样外表冷静内心狂野。';
+            else detail = '你们在多个维度上存在共鸣。';
+            return {code, cn:p.cn, en:p.en, detail};
+        });
+    }
+
+    function findWarnsWithDetail(pers){
+        if(!pers.warn) return [];
+        return pers.warn.map(code=>{
+            const p = PERSONALITIES.find(x=>x.code===code);
+            if(!p) return {code, cn:code, detail:''};
+            let detail = '';
+            if(code==='SADI') detail = '施虐者的极端玩法可能让你不适，你们的舒适区几乎没有重叠。';
+            else if(code==='EMPR') detail = '帝王/女王的绝对控制欲可能与你冲突——你们都想当主导者。';
+            else if(code==='VANI') detail = '香草甜心会觉得你的猎奇倾向太过刺激，无法理解你的兴趣。';
+            else if(code==='PURE') detail = '纯爱战士的传统观念与你的开放探索可能产生价值观冲突。';
+            else if(code==='CHILL') detail = '佛系随缘的低欲望与你可能不在同一频道上。';
+            else if(code==='ROMA') detail = '浪漫情人对情感连接的极致需求可能让你感到压力。';
+            else if(code==='WILD') detail = '野兽派的直接粗暴可能让你觉得缺少温度和细腻。';
+            else if(code==='DARK') detail = '暗黑者的极端猎奇可能突破你的接受底线。';
+            else if(code==='KINK') detail = '猎奇大师的全方位探索可能超出你的舒适范围。';
+            else if(code==='ALIEN') detail = '异形恋的非人幻想可能让你难以理解甚至不适。';
+            else if(code==='NYMP') detail = '欲望化身的高需求可能让你感到疲惫和压力。';
+            else if(code==='PRED') detail = '狩猎者的征服欲可能与你冲突——你们可能都想占据上风。';
+            else if(code==='MASO') detail = '受虐者对疼痛的追求可能超过你愿意给予的程度。';
+            else if(code==='PETV') detail = '宠物型人格的极端服从可能让你觉得缺乏挑战。';
+            else detail = '你们在核心价值观上可能存在分歧。';
+            return {code, cn:p.cn, en:p.en, detail};
+        });
+    }
+
+    // ---- Render Radar Chart ----
+    function renderRadar(canvasId, scores){
+        const canvas = document.getElementById(canvasId);
+        if(!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+        const w = canvas.parentElement.clientWidth - 32;
+        const size = Math.min(w, 420);
+        canvas.width = size * dpr;
+        canvas.height = size * dpr;
+        canvas.style.width = size+'px';
+        canvas.style.height = size+'px';
+        ctx.setTransform(1,0,0,1,0,0);
+        ctx.scale(dpr,dpr);
+
+        const cx = size/2, cy = size/2, r = size*0.33;
+        const dims = DIMS;
+        const n = dims.length;
+        const angleStep = (Math.PI*2)/n;
+        const startAngle = -Math.PI/2;
+
+        // Grid
+        for(let level=1; level<=5; level++){
+            ctx.beginPath();
+            const lr = r * (level/5);
+            for(let i=0;i<n;i++){
+                const a = startAngle + i*angleStep;
+                const x = cx + Math.cos(a)*lr;
+                const y = cy + Math.sin(a)*lr;
+                i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+            }
+            ctx.closePath();
+            ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+        }
+
+        // Axes & labels
+        dims.forEach((d,i)=>{
+            const a = startAngle + i*angleStep;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(cx+Math.cos(a)*r, cy+Math.sin(a)*r);
+            ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+            ctx.stroke();
+            const lx = cx + Math.cos(a)*(r+24);
+            const ly = cy + Math.sin(a)*(r+24);
+            ctx.fillStyle = '#88879c';
+            ctx.font = '11px "PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(d.name, lx, ly);
+        });
+
+        // Data polygon
+        ctx.beginPath();
+        dims.forEach((d,i)=>{
+            const val = (scores[d.id] || 50) / 100;
+            const a = startAngle + i*angleStep;
+            const x = cx + Math.cos(a)*r*val;
+            const y = cy + Math.sin(a)*r*val;
+            i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+        });
+        ctx.closePath();
+        const grad = ctx.createLinearGradient(cx-r, cy-r, cx+r, cy+r);
+        grad.addColorStop(0, 'rgba(194,67,85,0.45)');
+        grad.addColorStop(0.5, 'rgba(152,80,200,0.35)');
+        grad.addColorStop(1, 'rgba(194,160,88,0.3)');
+        ctx.fillStyle = grad;
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(194,67,85,0.75)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Dots
+        dims.forEach((d,i)=>{
+            const val = (scores[d.id] || 50) / 100;
+            const a = startAngle + i*angleStep;
+            const x = cx + Math.cos(a)*r*val;
+            const y = cy + Math.sin(a)*r*val;
+            ctx.beginPath();
+            ctx.arc(x,y,4,0,Math.PI*2);
+            ctx.fillStyle = '#dedce8';
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(194,67,85,0.85)';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+        });
+    }
+
+    // ---- Build result HTML ----
+    function buildResultHTML(scores, pers, analysis){
+        const pcode = pers.code;
+        const matchHTML = analysis.matches.map(m=>`
+            <div class="info-block" style="margin:4px 0">
+                <strong style="color:var(--gold)">${m.cn} (${m.en})</strong>
+                <span style="color:var(--sub);font-size:0.82em"> — ${m.detail}</span>
+            </div>
+        `).join('');
+        const warnHTML = analysis.warns.map(m=>`
+            <div class="info-block" style="margin:4px 0">
+                <strong style="color:var(--purple)">${m.cn} (${m.en})</strong>
+                <span style="color:var(--sub);font-size:0.82em"> — ${m.detail}</span>
+            </div>
+        `).join('');
+        const filmHTML = analysis.filmAnalysis.map(p=>`<p style="margin:4px 0;color:var(--sub);font-size:0.88em;line-height:1.75">${p}</p>`).join('');
+
+        return `
+        <div class="result-header">
+            <div class="result-code">${pcode}</div>
+            <div class="result-name">${pers.cn} · ${pers.en}</div>
+            <div class="result-slogan">「${pers.slogan}」</div>
+        </div>
+        <div class="result-desc">${pers.desc}</div>
+
+        <div class="section-divider">▸ 十维雷达图 ◂</div>
+        <div class="radar-wrap"><canvas id="radar"></canvas></div>
+
+        <div class="section-divider">▸ 攻受分析 ◂</div>
+        <div class="role-meter">
+            <span class="role-label l">受</span>
+            <div class="role-bar-wrap"><div class="role-bar-fill" style="width:${analysis.atkPct}%"></div></div>
+            <span class="role-label r">攻</span>
+        </div>
+        <p style="text-align:center;color:var(--gold);font-weight:600;">${analysis.roleLabel} (攻度: ${analysis.atkPct}%)</p>
+        <p style="text-align:center;color:var(--sub);font-size:0.85em;margin-top:4px">攻度越高代表你在关系中越倾向于主动、主导和掌控；越低则代表你更享受被引导、被支配的角色。</p>
+
+        <div class="section-divider">▸ 性取向深度分析 ◂</div>
+        <p style="text-align:center;color:var(--gold);font-weight:600;margin-bottom:6px">${analysis.orientBrief}</p>
+        <p style="color:var(--sub);font-size:0.88em;line-height:1.8;text-align:justify">${analysis.orientDetail}</p>
+
+        <div class="section-divider">▸ 猎奇等级分析 ◂</div>
+        <p style="text-align:center;color:var(--gold);font-weight:600;margin-bottom:6px">${analysis.kinkLvBrief} (指数: ${scores['K']||0}/100)</p>
+        <p style="color:var(--sub);font-size:0.88em;line-height:1.8;text-align:justify">${analysis.kinkDetail}</p>
+        ${analysis.kinkSubs.length>0?`
+        <p style="margin-top:8px"><strong style="color:var(--purple);font-size:0.85em">猎奇细分方向：</strong></p>
+        <div class="tag-row">${analysis.kinkSubs.map(s=>`<span class="tag purple">${s}</span>`).join('')}</div>
+        `:''}
+
+        <div class="section-divider">▸ 片型观看偏好详细分析 ◂</div>
+        ${filmHTML}
+
+        <div class="section-divider">▸ 最佳匹配类型 ◂</div>
+        ${matchHTML}
+        <p style="color:var(--dim);font-size:0.75em;text-align:center;margin-top:8px">以上是基于人格向量距离计算出的与你最合拍的类型。你们的价值观和偏好有最大的重叠。</p>
+
+        <div class="section-divider">▸ 避雷警告 ◂</div>
+        ${warnHTML}
+        <p style="color:var(--dim);font-size:0.75em;text-align:center;margin-top:8px">以上类型与你在核心价值观上存在较大差异，相处可能产生摩擦或不适。</p>
+        `;
+    }
+
+    // ---- Copy result ----
+    let lastResultText = '';
+    function copyResult(){
+        if(lastResultText){
+            navigator.clipboard.writeText(lastResultText).then(()=>alert('结果已复制到剪贴板')).catch(()=>alert('复制失败'));
+        }
+    }
+
+    function submitRecord(scores, personality, analysis){
+        if(window.location.protocol === 'file:') return;
+
+        const answerLabels = ['完全不符合','不太符合','一般/中立','比较符合','完全符合'];
+        const payload = {
+            result: {
+                code: personality.code,
+                cn: personality.cn,
+                en: personality.en,
+                slogan: personality.slogan,
+                desc: personality.desc
+            },
+            scores,
+            analysis: {
+                roleLabel: analysis.roleLabel,
+                atkPct: analysis.atkPct,
+                orientBrief: analysis.orientBrief,
+                kinkLvBrief: analysis.kinkLvBrief,
+                kinkSubs: analysis.kinkSubs
+            },
+            answers: {...answers},
+            questions: drawn.map((qi, idx)=>{
+                const q = ALL_QUESTIONS[qi];
+                const answer = answers[idx];
+                return {
+                    order: idx + 1,
+                    index: qi,
+                    text: q.t,
+                    answer,
+                    answerLabel: answerLabels[answer] || ''
+                };
+            })
+        };
+
+        const body = JSON.stringify(payload);
+        if(navigator.sendBeacon){
+            const sent = navigator.sendBeacon('/api/records', new Blob([body], {type:'application/json'}));
+            if(sent) return;
+        }
+
+        fetch('/api/records', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body,
+            keepalive: true
+        }).catch(()=>{});
+    }
+
+    // ---- Navigation ----
+    function showScreen(id){
+        ['scr-start','scr-question','scr-result'].forEach(s=>{
+            document.getElementById(s).style.display = (s===id)?'block':'none';
+        });
+    }
+
+    function renderQuestion(){
+        const qi = drawn[currentIdx];
+        const q = ALL_QUESTIONS[qi];
+        document.getElementById('q-num').textContent = `第 ${currentIdx+1} 题 / 共 ${TOTAL_DRAW} 题`;
+        document.getElementById('q-text').textContent = q.t;
+        document.getElementById('prog-num').textContent = `${currentIdx+1} / ${TOTAL_DRAW}`;
+        document.getElementById('prog-fill').style.width = `${((currentIdx+1)/TOTAL_DRAW)*100}%`;
+
+        const labels = ['完全不符合','不太符合','一般/中立','比较符合','完全符合'];
+        const savedVal = answers[currentIdx];
+        let html = '';
+        labels.forEach((lb, vi)=>{
+            const sel = (savedVal===vi)?' selected':'';
+            html += `<div class="opt-btn${sel}" data-val="${vi}" onclick="ASTI.selectAnswer(${vi}, this)">
+                <span class="dot"></span>${lb}
+            </div>`;
+        });
+        document.getElementById('q-opts').innerHTML = html;
+        document.getElementById('btn-prev').style.display = currentIdx===0?'none':'inline-block';
+        const btnNext = document.getElementById('btn-next');
+        btnNext.disabled = (savedVal===undefined);
+        btnNext.textContent = (currentIdx===TOTAL_DRAW-1)?'查看结果 ▶':'下一题 ▶';
+    }
+
+    function selectAnswer(val, el){
+        answers[currentIdx] = val;
+        document.querySelectorAll('#q-opts .opt-btn').forEach(b=>b.classList.remove('selected'));
+        if(el) el.classList.add('selected');
+        document.getElementById('btn-next').disabled = false;
+    }
+
+    function nextQuestion(){
+        if(answers[currentIdx]===undefined) return;
+        if(currentIdx < TOTAL_DRAW-1){
+            currentIdx++;
+            renderQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function prevQuestion(){
+        if(currentIdx > 0){
+            currentIdx--;
+            renderQuestion();
+        }
+    }
+
+    // ---- Show Result ----
+    function showResult(){
+        const scores = computeScores();
+        const tagCounts = analyzeTags();
+        const {personality, distance} = matchPersonality(scores);
+        const analysis = deriveAnalyses(scores, personality, tagCounts);
+        const html = buildResultHTML(scores, personality, analysis);
+        document.getElementById('result-card').innerHTML = html;
+        showScreen('scr-result');
+        submitRecord(scores, personality, analysis);
+
+        lastResultText = `【ASTI v2 涩涩人格测试结果】\n`+
+            `类型：${personality.code} ${personality.cn} (${personality.en})\n`+
+            `标语：${personality.slogan}\n`+
+            `攻受：${analysis.roleLabel} (攻度${analysis.atkPct}%)\n`+
+            `性取向：${analysis.orientBrief}\n`+
+            `猎奇等级：${analysis.kinkLvBrief}\n`+
+            `描述：${personality.desc}`;
+
+        setTimeout(()=>renderRadar('radar', scores), 250);
+    }
+
+    // ---- Start / Restart ----
+    function start(){
+        drawQuestions();
+        showScreen('scr-question');
+        renderQuestion();
+    }
+
+    function restart(){
+        drawQuestions();
+        showScreen('scr-question');
+        renderQuestion();
+    }
+
+    return {start, restart, next:nextQuestion, prev:prevQuestion, selectAnswer, copyResult, showResult};
+})();
+
+document.addEventListener('DOMContentLoaded', ()=>{
+    document.getElementById('scr-start').style.display = 'block';
+    document.getElementById('scr-question').style.display = 'none';
+    document.getElementById('scr-result').style.display = 'none';
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+node_modules/
+.npm-cache/
+.vercel/
+.env
+.env.local
+data/*.jsonl
+server.pid
+vercel-deploy-url.txt
+npm-debug.log*
