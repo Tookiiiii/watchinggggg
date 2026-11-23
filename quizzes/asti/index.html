@@ -227,7 +227,6 @@ canvas#radar{max-width:100%;height:auto}
         <p class="disclaimer">
             本测试仅供娱乐，不构成任何专业建议，请勿将该内容深记于心，只推荐发给朋友互相调侃。<br>
             所有内容均为 AI 生成给出的结果以及题目不一定符合实际或符合该内容的相关问题，仅供参考。<br>
-            使用本地服务运行时，答题记录会提交并保存在本机监控后台；直接打开 HTML 时不会上传。<br>
             未满 18 岁请勿使用。（骗你的你几岁都无所谓）
         </p>
     </div>
@@ -1289,54 +1288,6 @@ const ASTI = (function(){
         }
     }
 
-    function submitRecord(scores, personality, analysis){
-        if(window.location.protocol === 'file:') return;
-
-        const answerLabels = ['完全不符合','不太符合','一般/中立','比较符合','完全符合'];
-        const payload = {
-            result: {
-                code: personality.code,
-                cn: personality.cn,
-                en: personality.en,
-                slogan: personality.slogan,
-                desc: personality.desc
-            },
-            scores,
-            analysis: {
-                roleLabel: analysis.roleLabel,
-                atkPct: analysis.atkPct,
-                orientBrief: analysis.orientBrief,
-                kinkLvBrief: analysis.kinkLvBrief,
-                kinkSubs: analysis.kinkSubs
-            },
-            answers: {...answers},
-            questions: drawn.map((qi, idx)=>{
-                const q = ALL_QUESTIONS[qi];
-                const answer = answers[idx];
-                return {
-                    order: idx + 1,
-                    index: qi,
-                    text: q.t,
-                    answer,
-                    answerLabel: answerLabels[answer] || ''
-                };
-            })
-        };
-
-        const body = JSON.stringify(payload);
-        if(navigator.sendBeacon){
-            const sent = navigator.sendBeacon('/api/records', new Blob([body], {type:'application/json'}));
-            if(sent) return;
-        }
-
-        fetch('/api/records', {
-            method: 'POST',
-            headers: {'Content-Type':'application/json'},
-            body,
-            keepalive: true
-        }).catch(()=>{});
-    }
-
     // ---- Navigation ----
     function showScreen(id){
         ['scr-start','scr-question','scr-result'].forEach(s=>{
@@ -1401,7 +1352,6 @@ const ASTI = (function(){
         const html = buildResultHTML(scores, personality, analysis);
         document.getElementById('result-card').innerHTML = html;
         showScreen('scr-result');
-        submitRecord(scores, personality, analysis);
 
         lastResultText = `【ASTI v2 涩涩人格测试结果】\n`+
             `类型：${personality.code} ${personality.cn} (${personality.en})\n`+

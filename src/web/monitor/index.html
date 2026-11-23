@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="静态测试与问卷统一监控统计后台">
+  <title>测试数据监控后台</title>
+  <link rel="stylesheet" href="/monitor/monitor.css">
+</head>
+<body>
+  <section id="login-view" class="login-shell hidden">
+    <div class="login-card">
+      <div class="login-eyebrow">ADMIN CONSOLE</div>
+      <h1>监控后台登录</h1>
+      <p>请输入环境变量 <code>MONITOR_PASSWORD</code> 中配置的访问密码。</p>
+      <form id="login-form">
+        <label class="sr-only" for="password-input">后台密码</label>
+        <input id="password-input" type="password" placeholder="输入后台密码" autocomplete="current-password" required>
+        <button id="login-submit" type="submit" class="btn btn-primary full">进入后台</button>
+      </form>
+      <p id="login-error" class="error-text" role="alert"></p>
+    </div>
+  </section>
+
+  <div id="app-view" class="app-shell hidden">
+    <header class="topbar">
+      <div class="brand">
+        <h1>测试数据监控后台</h1>
+        <p class="subtitle">
+          投放静态网页至 <code>quizzes/</code> 即自动挂载并采集 ·
+          <a href="/" target="_blank" rel="noopener">打开测试入口</a> ·
+          <span id="storage-badge">存储加载中</span>
+        </p>
+      </div>
+      <div class="toolbar">
+        <button id="btn-refresh" type="button" class="btn">刷新数据</button>
+        <button id="btn-export-json" type="button" class="btn">导出 JSON</button>
+        <button id="btn-export-csv" type="button" class="btn">导出 CSV</button>
+        <button id="btn-logout" type="button" class="btn hidden">退出登录</button>
+        <button id="btn-clear" type="button" class="btn btn-danger">清空记录</button>
+      </div>
+    </header>
+
+    <section class="quiz-strip-wrap" aria-label="已自动挂载的测试">
+      <div class="section-head">
+        <h2>已挂载测试</h2>
+        <span id="quiz-count-meta" class="meta-hint">自动扫描 quizzes/ 目录</span>
+      </div>
+      <div id="quiz-strip" class="quiz-strip"></div>
+    </section>
+
+    <section class="kpi-grid" aria-label="统计概览">
+      <div class="kpi">
+        <span class="kpi-label">当前记录数</span>
+        <strong id="stat-total" class="kpi-value">0</strong>
+      </div>
+      <div class="kpi">
+        <span class="kpi-label">已完成提交</span>
+        <strong id="stat-completed" class="kpi-value">0</strong>
+      </div>
+      <div class="kpi">
+        <span class="kpi-label">作答中（断点）</span>
+        <strong id="stat-progress" class="kpi-value">0</strong>
+      </div>
+      <div class="kpi">
+        <span class="kpi-label">最后同步</span>
+        <strong id="stat-updated" class="kpi-value mono">-</strong>
+      </div>
+    </section>
+
+    <main class="workspace">
+      <aside class="rail" aria-label="记录列表">
+        <div class="rail-controls">
+          <input id="search-input" type="search" placeholder="搜索测试名、结果、题目、选项、IP...">
+          <div class="segmented" role="tablist" aria-label="按状态筛选">
+            <button type="button" class="seg-btn active" data-status="">全部</button>
+            <button type="button" class="seg-btn" data-status="completed">已完成</button>
+            <button type="button" class="seg-btn" data-status="in_progress">作答中</button>
+          </div>
+        </div>
+        <div id="record-list" class="record-list"></div>
+      </aside>
+
+      <section id="record-detail" class="detail-pane" aria-live="polite">
+        <div class="empty-state">选择左侧一条答题记录查看完整明细</div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+  <script src="/monitor/monitor.js"></script>
+</body>
+</html>

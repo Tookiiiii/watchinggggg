@@ -1,8 +1,13 @@
 {
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "{quizzes/**,src/**}"
+    }
+  },
   "rewrites": [
     {
-      "source": "/monitor",
-      "destination": "/monitor.html"
+      "source": "/(.*)",
+      "destination": "/api/index.js"
     }
   ]
 }

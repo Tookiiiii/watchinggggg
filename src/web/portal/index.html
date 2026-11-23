@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="在线趣味测试与问卷合集">
+  <title>在线测试中心</title>
+  <style>
+    :root {
+      --bg: #f6f5f1;
+      --surface: #ffffff;
+      --surface-hover: #fbfaf7;
+      --ink: #18181b;
+      --muted: #5c5e66;
+      --subtle: #8c8e96;
+      --border: #e4e2da;
+      --accent: #0f766e;
+      --accent-soft: #e6f4f1;
+      --shadow: 0 1px 2px rgba(24, 24, 27, 0.04), 0 8px 24px rgba(24, 24, 27, 0.04);
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 56px 24px 72px;
+    }
+
+    header {
+      margin-bottom: 36px;
+    }
+
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    header p {
+      margin: 0;
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 22px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: #cbd5d1;
+      background: var(--surface-hover);
+      box-shadow: 0 4px 12px rgba(24, 24, 27, 0.06), 0 12px 28px rgba(24, 24, 27, 0.06);
+    }
+
+    .card h2 {
+      margin: 0 0 6px;
+      font-size: 17px;
+      font-weight: 650;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 13.5px;
+      color: var(--muted);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 12px;
+      border-top: 1px solid #f0eee8;
+      font-size: 13px;
+    }
+
+    .slug {
+      color: var(--subtle);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12px;
+    }
+
+    .cta {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .empty {
+      padding: 48px 24px;
+      text-align: center;
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .page {
+        padding: 36px 16px 48px;
+      }
+
+      header h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <h1>在线测试中心</h1>
+      <p>选择一个测试开始作答。</p>
+    </header>
+    <section id="quiz-list" class="grid" aria-live="polite">
+      <div class="empty">正在加载测试列表…</div>
+    </section>
+  </main>
+
+  <script>
+    const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[ch]));
+
+    async function loadPortal() {
+      const container = document.getElementById('quiz-list');
+      try {
+        const res = await fetch('/api/quizzes?includeStats=0', { cache: 'no-store' });
+        const data = await res.json();
+        const quizzes = Array.isArray(data.quizzes) ? data.quizzes : [];
+
+        if (!quizzes.length) {
+          container.innerHTML = '<div class="empty">当前暂无可用测试。</div>';
+          return;
+        }
+
+        container.innerHTML = quizzes.map(quiz => `
+          <a class="card" href="${esc(quiz.mountPath)}">
+            <div>
+              <h2>${esc(quiz.title || quiz.slug)}</h2>
+              ${quiz.description ? `<p>${esc(quiz.description)}</p>` : ''}
+            </div>
+            <div class="card-footer">
+              <span class="slug">/${esc(quiz.slug)}</span>
+              <span class="cta">开始测试 →</span>
+            </div>
+          </a>
+        `).join('');
+      } catch {
+        container.innerHTML = '<div class="empty">加载失败，请刷新重试。</div>';
+      }
+    }
+
+    loadPortal();
+  </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>极速性格快测</title>
+</head>
+<body>
+  <main id="app">
+    <div id="quiz-screen">
+      <div class="step-counter" id="counter">1 / 3</div>
+      <h2 class="question-title" id="question-title"></h2>
+      <ul id="choice-list"></ul>
+    </div>
+
+    <div id="result-screen" style="display:none">
+      <div class="type-code">INTJ</div>
+      <h2 class="type-name">战略建筑师</h2>
+      <p class="slogan">冷静洞察全局</p>
+      <p>理性度: 91%</p>
+      <p>行动力: 78%</p>
+      <button id="btn-restart" type="button">重新测试</button>
+    </div>
+  </main>
+
+  <script>
+    const QUESTIONS = [
+      { q: '面对突发变化时，你的第一反应是？', opts: ['立刻拆解方案', '先观察局势', '找朋友商量'] },
+      { q: '周末聚会突然取消，你的真实感受是？', opts: ['暗自开心', '有点遗憾', '立刻约下一场'] },
+      { q: '更喜欢哪种工作节奏？', opts: ['深度专注单线推进', '多线程快速切换'] }
+    ];
+    let idx = 0;
+
+    function render() {
+      const item = QUESTIONS[idx];
+      document.getElementById('counter').textContent = `${idx + 1} / ${QUESTIONS.length}`;
+      document.getElementById('question-title').textContent = item.q;
+      const list = document.getElementById('choice-list');
+      list.innerHTML = item.opts
+        .map((opt, oi) => `<li><button type="button" class="choice-btn" data-val="${oi}">${opt}</button></li>`)
+        .join('');
+      list.querySelectorAll('.choice-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Immediately mutate DOM synchronously on click (classic auto-advance SPA pattern)
+          idx += 1;
+          if (idx < QUESTIONS.length) {
+            render();
+          } else {
+            document.getElementById('quiz-screen').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'block';
+          }
+        });
+      });
+    }
+
+    document.getElementById('btn-restart').addEventListener('click', () => {
+      idx = 0;
+      document.getElementById('result-screen').style.display = 'none';
+      document.getElementById('quiz-screen').style.display = 'block';
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>

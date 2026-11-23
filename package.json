@@ -1,11 +1,16 @@
 {
-  "name": "asti-local-monitor",
-  "version": "1.0.0",
+  "name": "watching-quiz-host",
+  "version": "2.0.0",
+  "description": "Universal static quiz/questionnaire hosting and automatic response analytics platform",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
-    "dev": "node server.js",
-    "start": "node server.js"
+    "dev": "node --watch src/server/index.js",
+    "start": "node src/server/index.js",
+    "test": "node --test tests/*.test.js"
   },
   "dependencies": {
     "@upstash/redis": "^1.35.3"

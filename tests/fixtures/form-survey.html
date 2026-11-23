@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>生活方式综合问卷</title>
+  <meta name="description" content="包含单选、多选、下拉、滑块和填空的传统表单问卷">
+</head>
+<body>
+  <main>
+    <h1>生活方式综合问卷</h1>
+    <form id="survey-form">
+      <fieldset>
+        <legend>1. 你平时更偏好哪种作息？</legend>
+        <label><input type="radio" name="sleep" value="early"> 早睡早起</label>
+        <label><input type="radio" name="sleep" value="night"> 深夜猫头鹰</label>
+        <label><input type="radio" name="sleep" value="random"> 随缘作息</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>2. 周末最喜欢的休闲方式（可多选）</legend>
+        <label><input type="checkbox" name="hobby" value="game"> 打游戏</label>
+        <label><input type="checkbox" name="hobby" value="read"> 看书</label>
+        <label><input type="checkbox" name="hobby" value="hike"> 户外徒步</label>
+      </fieldset>
+
+      <div class="question">
+        <label for="drink">3. 最常喝的饮品是？</label>
+        <select id="drink" name="drink">
+          <option value="">请选择</option>
+          <option value="coffee">美式咖啡</option>
+          <option value="tea">乌龙茶</option>
+          <option value="water">白开水</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label for="energy">4. 近期精力自评（0-100）</label>
+        <input id="energy" name="energy" type="range" min="0" max="100" value="50">
+      </div>
+
+      <div class="question">
+        <label for="note">5. 一句话形容最近的心情</label>
+        <textarea id="note" name="note" rows="2"></textarea>
+      </div>
+
+      <button type="submit">提交问卷</button>
+    </form>
+
+    <section id="result-box" style="display:none">
+      <h2 class="result-title">活力平衡型</h2>
+      <p class="final-score">总分：86 / 100</p>
+      <p>自律度: 82%</p>
+      <p>放松指数: 90/100</p>
+      <span class="tag">高效休息</span>
+      <span class="tag">夜行达人</span>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById('survey-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      document.getElementById('survey-form').style.display = 'none';
+      document.getElementById('result-box').style.display = 'block';
+    });
+  </script>
+</body>
+</html>

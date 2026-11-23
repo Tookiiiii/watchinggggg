@@ -4,6 +4,7 @@ node_modules/
 .env
 .env.local
 data/*.jsonl
+data/*.tmp
 server.pid
 vercel-deploy-url.txt
 npm-debug.log*
