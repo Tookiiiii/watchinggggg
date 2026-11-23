@@ -2,35 +2,7 @@
 
 本项目是 `https://adult-sex-type-indicator.netlify.app/` 的本地静态副本，并额外加入本机答题记录后台。
 
-## 运行
-
-```powershell
-npm start
-```
-
-默认地址：
-
-- 答题页面：http://127.0.0.1:3000/
-- 监控后台：http://127.0.0.1:3002/
-
-如果端口被占用，可以改环境变量：
-
-```powershell
-$env:APP_PORT=3100
-$env:MONITOR_PORT=3102
-npm start
-```
-
-## 数据
-
-答题记录保存在 `data/records.jsonl`。后台页面可以查看和清空记录。
-
-服务默认绑定 `127.0.0.1`，只允许本机访问。如需让局域网其他设备访问，可设置：
-
-```powershell
-$env:HOST='0.0.0.0'
-npm start
-```
+用于本人阴暗地视奸朋友(bushi
 
 ## Vercel 部署
 
@@ -64,7 +36,9 @@ Vercel 不适合直接运行本地的双端口 `server.js`，部署时会使用�
 
 部署后：
 
-- 测试页：`https://你的项目.vercel.app/`
-- 后台页：`https://你的项目.vercel.app/monitor`
+- 测试页：`https://~.vercel.app/`
+- 后台页：`https://~.vercel.app/monitor`
 
-后台输入 `MONITOR_PASSWORD` 才能读取或清空记录。朋友只需要访问测试页。
+后台输入 `MONITOR_PASSWORD` 才能读取或清空记录,朋友什么都不知道,十分之阴暗
+
+当然也可以用来视奸其他的那个...好了不多说了
